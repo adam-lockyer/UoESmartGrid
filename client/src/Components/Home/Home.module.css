@@ -1,0 +1,50 @@
+.hero {
+	background-image: url("/src/exeter uni.png");
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	height: calc(100vh - 66px);
+	width: 100%;
+}
+
+.heroText {
+	background: rgba(248, 248, 248, 0.98);
+	width: 80%;
+	padding: 10px;
+	position: absolute;
+	top: 90px;
+	left: 10%;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	text-align: center;
+	max-height: calc(100vh - 200px);
+	overflow-y: scroll;
+}
+
+.heroChild {
+	max-height: calc(100vh - 200px);
+	border-bottom: 1px solid rgb(173, 173, 173);
+}
+
+.leftAlign {
+	text-align: left;
+}
+
+.leftAlign h4 {
+	margin-left: 18%;
+}
+
+.rightAlign {
+	text-align: right;
+	border-bottom: 1px solid rgb(173, 173, 173);
+}
+
+.rightAlign h4 {
+	margin-right: 20%;
+}
+
+@media screen and (max-width: 500px) {
+	.hero {
+		height: calc(100vh - 72px);
+	}
+}

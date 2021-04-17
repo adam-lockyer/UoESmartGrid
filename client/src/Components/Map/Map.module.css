@@ -1,0 +1,32 @@
+.marker {
+	max-width: 25px;
+	position: absolute;
+	left: -12px;
+	top: -20px;
+	cursor: pointer;
+}
+.popup {
+	z-index: 10;
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+	border-radius: 20px;
+	max-width: 80%;
+	align-items: center;
+	text-align: center;
+	transition: 0.4s;
+}
+.popupContent {
+	padding: 10px;
+}
+.popupContent p {
+	padding: 5px 5px 0px 5px;
+	margin: 0;
+}
+.popupContent button {
+	width: 90%;
+	border-radius: 7px;
+	background: rgb(163, 163, 163);
+	border: none;
+	padding: 4px;
+	margin-top: -15px;
+	font-weight: 600;
+}

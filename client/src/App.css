@@ -74,15 +74,15 @@
 
 ::-webkit-scrollbar-track {
 	border-radius: 10px;
-	background-color: #f5f5f5;
+	background-color: #ffffff;
 }
 
 ::-webkit-scrollbar {
 	width: 8px;
-	background-color: #f5f5f5;
+	background-color: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: rgb(145, 144, 144);
+	background-color: rgb(192, 192, 192);
 }

@@ -8,7 +8,6 @@ import styles from "./BottomNavigation.module.css";
 const BottomNavigation = () => {
 	let loc = useLocation();
 	loc = loc.pathname.split("/")[1];
-	console.log(loc);
 	return (
 		<div className={styles.bottomNavWrapper}>
 			<div className={styles.bottomNav}>

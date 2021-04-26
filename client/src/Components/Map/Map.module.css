@@ -30,3 +30,15 @@
 	margin-top: -15px;
 	font-weight: 600;
 }
+
+.buttonSpacer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+}
+
+.buttonSpacer button {
+	margin: 10px 10px;
+	padding: 5px;
+}

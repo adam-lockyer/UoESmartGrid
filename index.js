@@ -16,6 +16,7 @@ const influx = new Influx.InfluxDB({
 });
 
 // Define Routes
+app.use("/api/forecast", require("./routes/forecast"));
 app.use("/api/consumption", require("./routes/consumption"));
 app.use("/api/rooms", require("./routes/rooms"));
 app.use("/api/auth", require("./routes/auth"));

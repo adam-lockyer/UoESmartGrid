@@ -1,13 +1,12 @@
-const { response } = require("express");
 const express = require("express");
 const router = express.Router();
+const config = require("config");
 const Influx = require("influx");
-const influx = new Influx.InfluxDB({
-	host: "localhost",
-	port: 8086,
-	protocol: "http",
-	database: "SmartGrid",
-});
+const influx = new Influx.InfluxDB(
+	`http://${config.get("DATABASE_USERNAME")}:${config.get(
+		"DATABASE_PASSWORD"
+	)}@localhost:8086/SmartGrid`
+);
 
 router.get("/:building", [], async (req, res) => {
 	const { building } = req.params;
@@ -55,16 +54,7 @@ router.get("/:building", [], async (req, res) => {
 	}
 	const query = `SELECT mean("reading") AS "reading" FROM ${reading} WHERE time > ${endDateAdj} AND time < ${startDateAdj} AND room='${room}' GROUP BY time(${grouping})`;
 	const result = await influx.query(query);
-	const cons = result.map((con) => {
-		if (con.reading === null) {
-			return {
-				...con,
-				reading: 0,
-			};
-		} else {
-			return con;
-		}
-	});
+	const cons = result.filter((con) => con.reading !== null);
 	return res.json({
 		building: building,
 		room: room,

@@ -19,7 +19,7 @@ const TopNavigation = ({ isAuthenticated }) => {
 							height="30"
 							className="mr-auto"
 						/>{" "}
-						Streatham Smart Grid
+						Smart Grid
 					</Link>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -27,7 +27,11 @@ const TopNavigation = ({ isAuthenticated }) => {
 					<Nav className="mr-auto"></Nav>
 					<Nav className="justify-center-end">
 						<Link to="/">Home Page</Link>
+					</Nav>
+					<Nav className="justify-center-end">
 						<Link to="/Info">Infomation</Link>
+					</Nav>
+					<Nav className="justify-center-end">
 						{isAuthenticated && <Link to="/Logout">Logout</Link>}
 					</Nav>
 				</Navbar.Collapse>

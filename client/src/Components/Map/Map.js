@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import ReactMapGL, {
-	Popup,
-	StaticMap,
-	Marker,
-	LinearInterpolator,
-} from "react-map-gl";
+import ReactMapGL, { Popup, Marker, LinearInterpolator } from "react-map-gl";
 import mapStyle from "./mapStyle.json";
 import { useHistory } from "react-router-dom";
 import { isMobile } from "react-device-detect";
@@ -17,8 +12,6 @@ const Map = () => {
 	const MAPBOX_TOKEN =
 		"pk.eyJ1Ijoic3F1aWdnbGVzMjU2IiwiYSI6ImNranVqeXY0MTAza3kydW51NGpvdG55MTEifQ.0kZloHbRuIykDGTOzHd1eQ";
 	const [viewport, setViewport] = useState({
-		// height: "100vh",
-		// width: "fit",
 		latitude: 50.7367,
 		longitude: -3.5345,
 		zoom: isMobile ? 15.2 : 16,
@@ -123,15 +116,28 @@ const Map = () => {
 											<h2>{location.name}</h2>
 											<p>{location.description}</p>
 											<br />
-											<button
-												onClick={() =>
-													history.push(
-														`/${location.tag}/Consumption`
-													)
-												}
+											<div
+												className={styles.buttonSpacer}
 											>
-												View Consumptions
-											</button>
+												<button
+													onClick={() =>
+														history.push(
+															`/${location.tag}/Consumption`
+														)
+													}
+												>
+													View Consumptions
+												</button>
+												<button
+													onClick={() =>
+														history.push(
+															`/forecast/${location.tag}/`
+														)
+													}
+												>
+													View Consumption Forecast
+												</button>
+											</div>
 										</div>
 									</Popup>
 								)}

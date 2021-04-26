@@ -1,8 +1,8 @@
 import "./App.css";
 // React
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // Redux
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./util/setAuthToken";
@@ -24,6 +24,7 @@ import BottomNavigation from "./Components/Navigation/BottomNavigation/BottomNav
 import TopNavigation from "./Components/Navigation/TopNavigation/TopNavigation";
 import Consumption from "./Components/Consumption/Consumption";
 import Detailed from "./Components/Detailed/detailed";
+import Forecast from "./Components/Forecast/forecast";
 import Logout from "./Components/Logout/Logout";
 
 // Check token
@@ -35,9 +36,6 @@ function App() {
 	useEffect(() => {
 		store.dispatch(loadUser());
 	}, []);
-	const [value, setValue] = useState();
-	const isAuthenticated = store.getState().auth.isAuthenticated;
-	console.log(isAuthenticated);
 	return (
 		<Provider store={store}>
 			<Router>
@@ -56,30 +54,6 @@ function App() {
 					{!isMobile && <TopNavigation />}
 					{isMobile && (
 						<>
-							{/* <BottomNavigation
-								// value={value}
-								// onChange={(event, newValue) => {
-								// 	setValue(newValue);
-								// }}
-								showLabels
-							>
-								<BottomNavigationAction
-									label="Smart Grid"
-									// href="/Map"
-									icon={<LocationOnIcon />}
-									containerElement={<Link to="/Map" />}
-								/>
-								<BottomNavigationAction
-									label="Home"
-									href="/"
-									icon={<HomeIcon />}
-								/>
-								<BottomNavigationAction
-									label="Information"
-									href={"/info"}
-									icon={}
-								/>
-							</BottomNavigation> */}
 							<BottomNavigation />
 						</>
 					)}
@@ -97,6 +71,11 @@ function App() {
 					<PrivateRoute
 						path="/room/:Room/:date"
 						component={Detailed}
+						exact
+					/>
+					<PrivateRoute
+						path="/forecast/:building"
+						component={Forecast}
 						exact
 					/>
 					<PrivateRoute path="/logout" component={Logout} exact />

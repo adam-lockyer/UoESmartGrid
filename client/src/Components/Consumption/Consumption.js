@@ -3,13 +3,13 @@ import styles from "./Consumption.module.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ResponsiveLine } from "@nivo/line";
-import { isMobile } from "react-device-detect";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
 const Consumption = () => {
 	let { building } = useParams();
-	const currentDate = Date.now() - 2.929e10;
+	//const currentDate = Date.now()
+	const currentDate = moment("2019-07-20 00:00").unix() * 1000;
 	const oneDayEpoch = 86400000;
 	const timeIntervals = [
 		{
@@ -67,19 +67,18 @@ const Consumption = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [selectedData, setSelectedData] = useState(false);
 	const [currentGrouping, setCurrentGrouping] = useState("");
-	const [timeType, setTimeType] = useState("");
 	const history = useHistory();
 
 	useEffect(async () => {
 		const res = await axios.get(
-			`http://localhost:5000/api/rooms/${building}`
+			`${process.env.REACT_APP_API_URL}/api/rooms/${building}`
 		);
 		setRooms(res.data.room);
 	}, []);
 
 	useEffect(async () => {
 		const res = await axios.get(
-			`http://localhost:5000/api/rooms/reading?Room=${Room}`
+			`${process.env.REACT_APP_API_URL}/api/rooms/reading?Room=${Room}`
 		);
 		setSelectedReading(null);
 		setReadings(res.data.readings);
@@ -94,7 +93,9 @@ const Consumption = () => {
 		setConsump([]);
 		if (interval && Room && selectedReading) {
 			const res = await axios.get(
-				`http://localhost:5000/api/consumption/${building}?StartDate=${
+				`${
+					process.env.REACT_APP_API_URL
+				}/api/consumption/${building}?StartDate=${
 					interval.value === "Custom Date"
 						? dateRange.endDate
 						: interval.start
@@ -155,26 +156,27 @@ const Consumption = () => {
 		setSelectedData(data);
 		setShowModal(!showModal);
 	};
-
 	return (
 		<>
-			{modalOpen ||
-				(showModal && (
-					<div
-						onClick={() => {
-							setShowModal(false);
-							setModalOpen(false);
-						}}
-						className={styles.darken}
-					></div>
-				))}
+			{(modalOpen || showModal) && (
+				<div
+					onClick={() => {
+						setShowModal(false);
+						setModalOpen(false);
+					}}
+					className={styles.darken}
+				></div>
+			)}
 			<div className={styles.container}>
 				{modalOpen && (
 					<>
-						<div className={styles.customDateModal}>
+						<div
+							className={`${styles.modal} ${styles.customDateModal}`}
+						>
 							<img
 								src={"/close.png"}
 								onClick={() => setModalOpen(false)}
+								alt=""
 							/>
 							<div className={styles.dpContainer}>
 								<h3>Pick Starting and Ending Dates</h3>
@@ -225,27 +227,37 @@ const Consumption = () => {
 						<img
 							src={"/close.png"}
 							onClick={() => setShowModal(false)}
+							alt=""
 						/>
 						<div className={styles.dpContainer}>
-							<h3>Data</h3>
-							<p>Time - {selectedData.x}</p>
-							<p>
-								Reading -{" "}
-								{Math.round(selectedData.y * 100) / 100}{" "}
-								{units === "m3" ? (
+							<h3>Selected Data</h3>
+							<div className={styles.dataContainer}>
+								<p>
+									Time -{" "}
 									<span>
-										m<sup>3</sup>
+										{moment(selectedData.x).format(
+											"dddd, MMMM Do YYYY, h:mm:ss"
+										)}
 									</span>
-								) : units === "ft3" ? (
+								</p>
+								<p>
+									Reading -{" "}
 									<span>
-										m<sup>3</sup>
+										{Math.round(selectedData.y * 100) / 100}{" "}
+										{units === "m3" ? (
+											<span>
+												m<sup>3</sup>
+											</span>
+										) : units === "ft3" ? (
+											<span>
+												m<sup>3</sup>
+											</span>
+										) : (
+											<span>{units}</span>
+										)}
 									</span>
-								) : (
-									<span>{units}</span>
-								)}
-							</p>
-							<br></br>
-							<br></br>
+								</p>
+							</div>
 							{currentGrouping === "1h" ? (
 								<button
 									className={styles.detailsButton}
@@ -286,14 +298,23 @@ const Consumption = () => {
 												timeType
 											)
 											.valueOf();
-										const adjustedEnd = originalDate2
-											.add(
-												currentGrouping.match(
-													/[a-z]+|[^a-z]+/gi
-												)[0],
-												timeType
-											)
-											.valueOf();
+										let adjustedEnd = originalDate2.add(
+											currentGrouping.match(
+												/[a-z]+|[^a-z]+/gi
+											)[0],
+											timeType
+										);
+										if ((timeType = "h")) {
+											adjustedEnd = adjustedEnd
+												.add(
+													currentGrouping.match(
+														/[a-z]+|[^a-z]+/gi
+													)[0],
+													timeType
+												)
+												.valueOf();
+										}
+
 										setDateRange({
 											startDate: adjustedStart,
 											endDate: adjustedEnd,
@@ -319,7 +340,12 @@ const Consumption = () => {
 					</div>
 					<div className={styles.roomNames}>
 						{rooms.map((room) => (
-							<button onClick={() => setRoom(room.value)}>
+							<button
+								onClick={() => setRoom(room.value)}
+								className={
+									Room === room.value ? styles.roomActive : ""
+								}
+							>
 								{room.value}
 							</button>
 						))}
@@ -337,17 +363,14 @@ const Consumption = () => {
 													setSelectedReading(
 														reading.name
 													);
-													{
-														reading.name ===
-														"Electric"
-															? setUnits("kWh")
-															: reading.name ===
-															  "Water"
-															? setUnits("m3")
-															: reading.name ===
-																	"Gas" &&
-															  setUnits("ft3");
-													}
+													reading.name === "Electric"
+														? setUnits("kWh")
+														: reading.name ===
+														  "Water"
+														? setUnits("m3")
+														: reading.name ===
+																"Gas" &&
+														  setUnits("ft3");
 													getData();
 												}}
 												className={
@@ -395,6 +418,25 @@ const Consumption = () => {
 								</h4>
 							)}
 						</div>
+						<div className={styles.groupingPrompt}>
+							{Consump.length > 0 && currentGrouping && (
+								<>
+									<p>
+										Data is grouped over{" "}
+										{
+											currentGrouping.match(
+												/[a-z]+|[^a-z]+/gi
+											)[0]
+										}{" "}
+										{currentGrouping.match(
+											/[a-z]+|[^a-z]+/gi
+										)[1] === "d"
+											? "day(s)"
+											: "hour(s)"}
+									</p>
+								</>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -426,7 +468,6 @@ const MyResponsiveLine = ({ data, units, handleClick }) => {
 				orient: "bottom",
 				format: "%b %d, %H:%M",
 				tickValues: 10,
-				legend: "time scale",
 				legend: "Time",
 				tickRotation: -30,
 				legendOffset: 60,

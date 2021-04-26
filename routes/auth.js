@@ -7,16 +7,19 @@ const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Influx = require("influx");
-const influx = new Influx.InfluxDB({
-	host: "localhost",
-	port: 8086,
-	protocol: "http",
-	database: "SmartGrid",
-});
+const influx = new Influx.InfluxDB(
+	`http://${config.get("DATABASE_USERNAME")}:${config.get(
+		"DATABASE_PASSWORD"
+	)}@localhost:8086/SmartGrid`
+);
 
 // Login
 router.post("/login", async (req, res) => {
 	const { user, password } = req.body;
+	if (user !== "admin")
+		return res
+			.status(400)
+			.json({ errors: [{ msg: "Username or password is incorrect" }] });
 	const query = `SELECT * FROM "users" WHERE username='${user}'`;
 	const result = await influx.query(query);
 	const foundUser = result[0];
@@ -25,7 +28,6 @@ router.post("/login", async (req, res) => {
 			.status(404)
 			.json({ errors: [{ msg: "Username or password is incorrect" }] });
 	const isMatch = await bcrypt.compare(password, foundUser.password);
-	console.log(isMatch);
 	if (isMatch) {
 		// Generate Token and send back
 		const payload = {
@@ -34,7 +36,6 @@ router.post("/login", async (req, res) => {
 		const token = jwt.sign(payload, config.get("jwtSecret"), {
 			expiresIn: config.get("jwtExpiry"),
 		});
-		console.log(token);
 		return res.json({ token });
 	} else {
 		return res

@@ -27,7 +27,7 @@ const Login = ({ login, isAuthenticated }) => {
 		<div className={styles.loginPage}>
 			<div className={`${styles.Login} ${styles.loginChild}`}>
 				<div className={styles.loginWrapper}>
-					<h4>Text here that looks good</h4> <br />
+					<h4>Please Login Below:</h4> <br />
 					<Form onSubmit={handleSubmit}>
 						<Form.Group size="lg" controlId="email">
 							<Form.Label>Username</Form.Label>

@@ -1,0 +1,79 @@
+.Login {
+	padding: 60px 0;
+	margin: 0 auto;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+	width: 100%;
+	padding: 10px;
+	background: rgb(2, 82, 119);
+	color: white;
+	font-size: 110%;
+	letter-spacing: 1px;
+	border: none;
+	border-radius: 5px;
+}
+
+.loginPage {
+	display: flex;
+	height: calc(100vh - 66px);
+}
+
+.loginPage .loginChild {
+	flex: 0 0 50%;
+}
+
+.loginWrapper {
+	width: 60%;
+}
+
+.hero {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+		url("/src/exeter uni.png");
+	background-position: center;
+	background-size: cover;
+	display: flex;
+	align-items: center;
+}
+
+.heroText {
+	padding: 20px;
+	color: white;
+}
+
+.heroText span {
+	font-size: 200%;
+}
+
+.heroText p {
+	margin-top: 20px;
+	font-size: 150%;
+}
+
+@media screen and (max-width: 780px) {
+	.Login {
+		max-width: 90%;
+		display: block;
+	}
+	.loginWrapper {
+		margin: 0 auto;
+	}
+	.hero {
+		display: none;
+	}
+	.loginPage .loginChild {
+		flex: 0 0 100%;
+		height: calc(100vh - 73px);
+	}
+}
+
+
+@media screen and (min-width: 1200px) {
+	.Login {
+		max-width: 600px;
+	}
+}

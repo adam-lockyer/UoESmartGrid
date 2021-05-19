@@ -1,0 +1,147 @@
+.container {
+	margin: 20px;
+	display: flex;
+	justify-content: space-between;
+	height: calc(100vh - 106px);
+}
+
+.container h3 {
+	padding: 2px;
+}
+
+.left {
+	flex: 0 0 32%;
+	display: block;
+	text-align: center;
+	justify-content: center;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	overflow-y: scroll;
+}
+
+.right {
+	flex: 0 0 65%;
+	min-height: 600px;
+	overflow-y: scroll;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	overflow-y: scroll;
+}
+
+.left button {
+	border-radius: 3px;
+	padding: 5px;
+}
+.Prompt {
+	margin: 3vh auto 0 auto;
+}
+
+.title {
+	padding-top: 5vh;
+}
+
+.roomNames {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	height: 80%;
+}
+
+.readingTabs {
+	display: flex;
+	width: 100%;
+	padding: 10px 0px 0px 20px;
+}
+
+.readingTabs button {
+	padding: 5px;
+	background: rgb(228, 226, 226);
+	outline: none;
+}
+
+.tabActive {
+	background: white !important;
+	border-bottom: 0;
+	font-size: 120%;
+	padding: 5px !important;
+	transform: translateY(5%);
+}
+.roomActive {
+	background: white !important;
+	padding: 5px !important;
+	transform: translateY(5%);
+}
+@media screen and (max-width: 1250px) {
+	.container {
+		margin-left: 10%;
+		margin-right: 10%;
+		display: inline-block;
+		text-align: center;
+		width: 80%;
+	}
+	.left {
+		height: 50vh;
+	}
+	.right {
+		height: 50vh;
+	}
+}
+.container .GraphStyling {
+	height: 50%;
+	width: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 15px 0 0px 15px;
+	overflow: visible;
+	overflow-x: hidden;
+}
+
+.graphTitle,
+.observations {
+	text-align: center;
+}
+.graphTitle {
+	padding: 15px 0;
+}
+.observations {
+	height: 250px;
+	padding-top: 10px;
+	width: 80%;
+	margin: 0 auto;
+	overflow-y: scroll;
+	box-shadow: 0px 10px 15px 0 rgba(0, 0, 0, 0.2);
+}
+
+.observations p {
+	margin: 1px;
+}
+
+.translatedOnRight {
+	transform: translateX(-125px);
+}
+
+.translatedOnLeft {
+	transform: translateX(125px);
+}
+.tooltip {
+	background: rgba(255, 255, 255, 0.95);
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	width: 250px;
+	text-align: center;
+	border: 2px solid rgb(61, 61, 61);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.3s;
+}
+
+.tooltip .square {
+	flex: 1 0 20px;
+	margin-right: 10px;
+}
+
+.tooltip .paragraphs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}

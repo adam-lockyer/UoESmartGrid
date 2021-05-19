@@ -1,0 +1,47 @@
+.bottomNav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+  
+  }
+  
+  .bottomNavItem svg{
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .bottomNavItem p{
+    margin: 0;
+  }
+  
+  .bottomNavItem {
+    margin: 0 auto;
+    padding: 7px;
+    border-radius: 10px;
+
+  }
+
+  .bottomNavItem a{
+    color: black;
+  }
+  
+  .bottomNav .active a{
+    color: rgb(2, 82, 119)!important;
+    font-weight: 600;
+  }
+  
+  .bottomNavWrapper{
+    width: 100%;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 0;
+    background: rgb(235, 234, 234);
+  }
+  
+  @media screen and (max-width: 500px){
+    .bottomNav{
+      width: 100%;
+    }
+  }

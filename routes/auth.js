@@ -1,4 +1,3 @@
-const { response } = require("express");
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const config = require("config");
@@ -74,7 +73,7 @@ router.post("/create", async (req, res) => {
 		const result = await influx.query(selectionQuery);
 		return res.json(result[0]);
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return res.send("error");
 	}
 });

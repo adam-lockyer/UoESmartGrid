@@ -140,6 +140,7 @@ const Detailed = () => {
 							units={<>&#8451;</>}
 							leftLegend="Temperature (&#8451;)"
 							chosenScheme="category10"
+							min="-4"
 						/>
 						<br></br>
 						<h4>
@@ -150,6 +151,7 @@ const Detailed = () => {
 							units="%"
 							leftLegend="Humidity (%)"
 							chosenScheme="set1"
+							min="0"
 						/>
 						<br></br>
 						<h4>
@@ -160,6 +162,7 @@ const Detailed = () => {
 							units="m/h"
 							leftLegend="Wind Speed (miles per hour)"
 							chosenScheme="spectral"
+							min="0"
 						/>
 					</div>
 				</div>
@@ -169,7 +172,7 @@ const Detailed = () => {
 		</div>
 	);
 };
-const MyResponsiveLine = ({ data, units, leftLegend, chosenScheme }) => {
+const MyResponsiveLine = ({ data, units, leftLegend, chosenScheme, min }) => {
 	return (
 		<ResponsiveLine
 			data={data}
@@ -183,7 +186,7 @@ const MyResponsiveLine = ({ data, units, leftLegend, chosenScheme }) => {
 				type: "linear",
 				max: "auto",
 				stacked: true,
-				min: 0,
+				min: min,
 			}}
 			yFormat=" >-.2f"
 			curve="monotoneX"

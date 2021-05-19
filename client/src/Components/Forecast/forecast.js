@@ -13,6 +13,20 @@ const Forecast = () => {
 	const [predictions, setPredictions] = useState([]);
 	const [selectedRoom, setSelectedRoom] = useState("");
 	const [selectedReading, setSelectedReading] = useState(null);
+	const [cleanData, setCleanData] = useState({
+		sum: 0,
+		mean: 0,
+		weekdaysum: 0,
+		weekdaymean: 0,
+		operatingsum: 0,
+		operatingmean: 0,
+		weekendsum: 0,
+		weekendmean: 0,
+		notoperatingsum: 0,
+		notoperatingmean: 0,
+		max_value: [0, 0, 0, 0, 0, 0, 0],
+		min_value: [0, 0, 0, 0, 0, 0, 0],
+	});
 	const [readings, setReadings] = useState(null);
 	const [units, setUnits] = useState("");
 	const [showModal, setShowModal] = useState(false);
@@ -25,6 +39,7 @@ const Forecast = () => {
 	}, []);
 
 	useEffect(async () => {
+		setPredictions([]);
 		const res = await axios.get(
 			`${process.env.REACT_APP_API_URL}/api/rooms/reading?Room=${selectedRoom}`
 		);
@@ -34,6 +49,15 @@ const Forecast = () => {
 	useEffect(async () => {
 		if (selectedReading === null) return;
 		setLoading(true);
+		setPredictions([]);
+		const data = await getData();
+		if (data) {
+			setPredictions(data);
+		}
+		setLoading(false);
+	}, [selectedReading]);
+
+	const getData = async () => {
 		const config = {
 			headers: {
 				"Content-Type": "application/json",
@@ -49,17 +73,16 @@ const Forecast = () => {
 			body,
 			config
 		);
-		setPredictions(res.data);
-		setLoading(false);
-	}, [selectedReading]);
+		return res.data;
+	};
 
 	const LineData = [
 		{
 			id: "",
 			data: predictions.map((pred) => {
 				return {
-					x: pred[6],
-					y: pred[5],
+					x: pred[10],
+					y: pred[9],
 				};
 			}),
 		},
@@ -68,7 +91,6 @@ const Forecast = () => {
 	const handleClick = (e) => {
 		setShowModal(!showModal);
 	};
-
 	let sum,
 		mean,
 		weekdaysum,
@@ -84,25 +106,25 @@ const Forecast = () => {
 
 	if (predictions.length > 1) {
 		const predictionsCopy = [...predictions];
-		const values = predictionsCopy.map((item) => item[5]);
+		const values = predictionsCopy.map((item) => item[9]);
 		sum = values.reduce((acc, current) => acc + current);
 		mean = sum / values.length;
 		const weekdayvalues = predictionsCopy
-			.map((item) => item[1] === 1 && item[5])
+			.map((item) => item[6] === 1 && item[9])
 			.filter((value) => value !== false);
 		const operatingvalues = predictionsCopy
-			.map((item) => item[2] === 1 && item[5])
+			.map((item) => item[7] === 1 && item[9])
 			.filter((value) => value !== false);
 		weekdaysum = weekdayvalues.reduce((acc, current) => acc + current);
 		weekdaymean = weekdaysum / weekdayvalues.length;
 		operatingsum = operatingvalues.reduce((acc, current) => acc + current);
 		operatingmean = operatingsum / operatingvalues.length;
 		const weekendvalues = predictionsCopy
-			.map((item) => item[1] === 0 && item[5])
+			.map((item) => item[6] === 0 && item[9])
 			.filter((value) => value !== false);
 
 		const notoperatingvalues = predictionsCopy
-			.map((item) => item[2] === 0 && item[5])
+			.map((item) => item[7] === 0 && item[9])
 			.filter((value) => value !== false);
 		weekendsum = weekendvalues.reduce((acc, current) => acc + current);
 		weekendmean = weekendsum / weekendvalues.length;
@@ -111,10 +133,11 @@ const Forecast = () => {
 		);
 		notoperatingmean = notoperatingsum / notoperatingvalues.length;
 
-		const sortedValues = predictionsCopy.sort((a, b) => a[5] - b[5]);
+		const sortedValues = predictionsCopy.sort((a, b) => a[9] - b[9]);
 		max_value = sortedValues[sortedValues.length - 1];
 		min_value = sortedValues[0];
 	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.left}>
@@ -130,8 +153,9 @@ const Forecast = () => {
 					)}
 				</div>
 				<div className={styles.roomNames}>
-					{rooms.map((room) => (
+					{rooms.map((room, index) => (
 						<button
+							key={index}
 							onClick={() => setSelectedRoom(room.value)}
 							className={
 								selectedRoom === room.value
@@ -147,28 +171,27 @@ const Forecast = () => {
 			<div className={styles.right}>
 				<div className={styles.readingTabs}>
 					{readings &&
-						readings.map((reading) => (
-							<>
-								<button
-									onClick={() => {
-										setSelectedReading(reading.name);
-										reading.name === "Electric"
-											? setUnits("kWh")
-											: reading.name === "Water"
-											? setUnits("m3")
-											: reading.name === "Gas" &&
-											  setUnits("ft3");
-										// Call network and predict value
-									}}
-									className={
-										selectedReading === reading.name
-											? styles.tabActive
-											: ""
-									}
-								>
-									{reading.name}
-								</button>
-							</>
+						readings.map((reading, index) => (
+							<button
+								key={index}
+								onClick={() => {
+									setSelectedReading(reading.name);
+									reading.name === "Electric"
+										? setUnits("kWh")
+										: reading.name === "Water"
+										? setUnits("m3")
+										: reading.name === "Gas" &&
+										  setUnits("ft3");
+									// Call network and predict value
+								}}
+								className={
+									selectedReading === reading.name
+										? styles.tabActive
+										: ""
+								}
+							>
+								{reading.name}
+							</button>
 						))}
 				</div>
 				<div className={styles.graphTitle}>
@@ -197,7 +220,7 @@ const Forecast = () => {
 							<p>
 								Highest Usage:{" "}
 								<b>
-									{Math.round(max_value[5] * 100) / 100}{" "}
+									{Math.round(max_value[9] * 100) / 100}{" "}
 									{units}
 								</b>{" "}
 								on{" "}
@@ -208,7 +231,7 @@ const Forecast = () => {
 							<p>
 								Lowest Usage:{" "}
 								<b>
-									{Math.round(min_value[5] * 100) / 100}{" "}
+									{Math.round(min_value[9] * 100) / 100}{" "}
 									{units}
 								</b>{" "}
 								on{" "}
@@ -312,7 +335,7 @@ const MyResponsiveLine = ({ data, units, handleClick, chosenScheme }) => {
 		<ResponsiveLine
 			onClick={(e) => handleClick(e)}
 			data={data}
-			margin={{ top: 60, right: 50, bottom: 70, left: 50 }}
+			margin={{ top: 80, right: 50, bottom: 70, left: 50 }}
 			xScale={{
 				type: "time",
 				format: "%Y-%m-%d %H:%M",

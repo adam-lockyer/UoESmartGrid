@@ -7,6 +7,8 @@ import urllib.parse
 import dateutil.parser
 import datetime, holidays
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import MinMaxScaler
 
 building = sys.argv[1]
 room = urllib.parse.unquote(sys.argv[2])
@@ -16,6 +18,7 @@ data = []
 f = open('./python_ann/data.txt', 'r')
 data = json.loads(f.read())
 x_pred = []
+pred_out = []
 dates = []
 for item in data:
     formattedDate = datetime.datetime.strptime("{} {}".format(item[0][0:10], item[0][11:16]), "%Y-%m-%d %H:%M")
@@ -28,41 +31,76 @@ for item in data:
             if formattedDate == (date[0].strftime('%Y-%m-%d')):
                 NotHoliday = 0
                 break
-    x_pred.append([ NotHoliday, NotWeekend, InOperatingHours, item[3], item[5]])
+    x_pred.append([item[1], item[2], item[3], item[4], item[5], item[6], NotWeekend, InOperatingHours, NotHoliday])
+    pred_out.append([item[1], item[2], item[3], item[4], item[5], item[6], NotWeekend, InOperatingHours, NotHoliday])
 
-pred_out = x_pred
+model = keras.models.load_model("./python_ann/{}_{}_Model.h5".format(building, reading))
 
-model = keras.models.load_model("./python_ann/{}_{}_{}_Model.h5".format(building, room, reading))
+xFit = pd.read_csv('./python_ann/{}_{}_xTrain.csv'.format(building, reading), header=0)
+yFit = pd.read_csv('./python_ann/{}_{}_yTrain.csv'.format(building, reading), header=0)
 
-df = pd.read_csv('./python_ann/ScalerFit({}-{}-{}).csv'.format(building, room, reading), header=0)
-df = df[df.Reading != 0]
-uv = np.percentile(df.Reading, [99])[0]
-df.Reading[df.Reading > 2*uv] = 2*uv
-lv = np.percentile(df.Reading, [1])[0]
-df.Reading[df.Reading < 0.5*lv] = 0.5*lv
-selectionArray = ""
-if reading == 'Electric':
-    selectionArray = ["Datetime", "NotHoliday", "NotWeekend", "InOperatingHours", "Temperature", "Humidity"]
-elif reading == 'Gas':
-    selectionArray = ["Datetime", "NotHoliday", "NotWeekend", "InOperatingHours", "Temperature", "Humidity"]
-elif reading == 'Water':
-    selectionArray = ["Datetime", "NotHoliday", "NotWeekend", "InOperatingHours", "Temperature", "Humidity"]
+if building == 'Harrison':
+    if reading == 'Gas':
+        x_pred_final = []
 
-x_train_full = df[selectionArray][:8000]
-x_train_full = x_train_full.drop(columns="Datetime")
-x_train_full = x_train_full.to_numpy(dtype=np.float32)
-y_train_full = df[["Datetime", "Reading"]][:8000]
-y_train_full = y_train_full.drop(columns="Datetime")
-y_train_full = y_train_full.to_numpy(dtype=np.float32)
+        for index, e in enumerate(x_pred):
+            item = e
+            item.pop(5)
+            item.pop(7)
+            x_pred_final.append(item)
+        
+        x_train_full = xFit.to_numpy()
+        y_train_full = yFit.to_numpy()
+
+    elif reading == 'Electric':
+        x_pred_final = x_pred
+        x_train_full = xFit.to_numpy(dtype=np.float32)
+        y_train_full = yFit.to_numpy(dtype=np.float32)
+
+    elif reading == 'Water':
+        x_pred_final = []
+        for index, e in enumerate(x_pred):
+            item = e
+            item.pop(5)
+            item.pop(7)
+            x_pred_final.append(item)
+        x_train_full = xFit.to_numpy(dtype=np.float64)
+        y_train_full = yFit.to_numpy(dtype=np.float64)
+
+elif building == 'Innovation':
+    if reading == 'Electric':
+        x_pred_final = []
+
+        for index, e in enumerate(x_pred):
+            item = e
+            item.pop(5)
+            x_pred_final.append(item)
+        x_train_full = xFit.to_numpy(dtype=np.float32)
+        y_train_full = yFit.to_numpy(dtype=np.float32)
+
+    elif reading == 'Water':
+        x_pred_final = []
+
+        for index, e in enumerate(x_pred):
+            item = e
+            item.pop(5)
+            x_pred_final.append(item)
+        x_train_full = xFit.to_numpy(dtype=np.float64)
+        y_train_full = yFit.to_numpy(dtype=np.float64)
 
 scaler_x = StandardScaler()
 scaler_x.fit(x_train_full)
-x_pred = scaler_x.transform(x_pred)
-
-scaler_y = StandardScaler()
-scaler_y.fit(y_train_full)
-y_out = scaler_y.inverse_transform(model.predict(x_pred))
+x_pred_final = scaler_x.transform(x_pred_final)
+scaler_y = MinMaxScaler(feature_range=(0,1))
+y_train_full = scaler_y.fit(y_train_full.reshape(-1, 1))
+y_out = scaler_y.inverse_transform(model.predict(x_pred_final))
+for index, e in enumerate(y_out):
+    if e < 0:
+        e = 0
+        y_out[index] = e
 y_out = np.ndarray.tolist((np.reshape(y_out, (1, -1))))
+
+
 
 for index, row in enumerate(pred_out):
     row.append(y_out[0][index])

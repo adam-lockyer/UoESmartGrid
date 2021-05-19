@@ -19,7 +19,7 @@ router.get("/:building", [], async (req, res) => {
 	try {
 		timeRes = await influx.query(queryTime);
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 	if (!timeRes) {
 		return res.json({

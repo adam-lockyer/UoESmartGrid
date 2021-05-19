@@ -29,6 +29,7 @@ router.post("/", [], async (req, res) => {
 				formattedDate,
 				hour.winddir,
 				hour.windspeed,
+				hour.cloudcover,
 				hour.temp,
 				hour.pressure,
 				hour.humidity,
@@ -41,7 +42,7 @@ router.post("/", [], async (req, res) => {
 	exec(
 		`py python_ann/predict.py ${building} ${room} ${reading}`,
 		(err, stdout, stderr) => {
-			if (err) console.log(err.stack);
+			if (err) console.error(err.stack);
 			return res.status(200).json(JSON.parse(stdout));
 		}
 	);

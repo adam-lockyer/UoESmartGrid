@@ -15,7 +15,6 @@
 	top: 90px;
 	left: 10%;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-	border-radius: 10px;
 	text-align: center;
 	max-height: calc(100vh - 200px);
 	overflow-y: scroll;

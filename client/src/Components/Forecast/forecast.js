@@ -154,17 +154,17 @@ const Forecast = () => {
 				</div>
 				<div className={styles.roomNames}>
 					{rooms.map((room, index) => (
-						<button
-							key={index}
+						<div
 							onClick={() => setSelectedRoom(room.value)}
-							className={
-								selectedRoom === room.value
-									? styles.roomActive
-									: ""
-							}
+							style={{
+								borderRight:
+									selectedRoom === room.value
+										? "10px solid rgba(0, 124, 226, 0.8)"
+										: "10px solid transparent",
+							}}
 						>
 							{room.value}
-						</button>
+						</div>
 					))}
 				</div>
 			</div>
@@ -224,7 +224,7 @@ const Forecast = () => {
 									{units}
 								</b>{" "}
 								on{" "}
-								{moment(max_value[6]).format(
+								{moment(max_value[10]).format(
 									"dddd Do [at] HH:mm"
 								)}
 							</p>
@@ -235,7 +235,7 @@ const Forecast = () => {
 									{units}
 								</b>{" "}
 								on{" "}
-								{moment(min_value[6]).format(
+								{moment(min_value[10]).format(
 									"dddd Do [at] HH:mm"
 								)}
 							</p>

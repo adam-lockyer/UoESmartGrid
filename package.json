@@ -18,6 +18,7 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "cors": "^2.8.5",
+    "date-holidays": "^3.8.3",
     "express": "^4.17.1",
     "influx": "^5.7.0",
     "influxdb-nodejs": "^3.1.0",

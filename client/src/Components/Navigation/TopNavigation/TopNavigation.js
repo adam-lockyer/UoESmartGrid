@@ -14,12 +14,10 @@ const TopNavigation = ({ isAuthenticated }) => {
 					<Link to="/Map">
 						<img
 							alt=""
-							src="/pylon2.png"
-							width="30"
-							height="30"
+							src="/logo.png"
+							height="40"
 							className="mr-auto"
-						/>{" "}
-						Smart Grid
+						/>
 					</Link>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />

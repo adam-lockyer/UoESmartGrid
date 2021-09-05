@@ -340,14 +340,17 @@ const Consumption = () => {
 					</div>
 					<div className={styles.roomNames}>
 						{rooms.map((room) => (
-							<button
+							<div
 								onClick={() => setRoom(room.value)}
-								className={
-									Room === room.value ? styles.roomActive : ""
-								}
+								style={{
+									borderRight:
+										Room === room.value
+											? "10px solid rgba(0, 124, 226, 0.8)"
+											: "10px solid transparent",
+								}}
 							>
 								{room.value}
-							</button>
+							</div>
 						))}
 					</div>
 				</div>
@@ -370,7 +373,7 @@ const Consumption = () => {
 														? setUnits("m3")
 														: reading.name ===
 																"Gas" &&
-														  setUnits("ft3");
+														  setUnits("m3");
 													getData();
 												}}
 												className={
@@ -516,7 +519,7 @@ const MyResponsiveLine = ({ data, units, handleClick }) => {
 									</span>
 								) : units === "ft3" ? (
 									<span>
-										m<sup>3</sup>
+										ft<sup>3</sup>
 									</span>
 								) : (
 									<span>{units}</span>

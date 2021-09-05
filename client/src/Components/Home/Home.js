@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./Home.module.css";
+const moment = require("moment");
 
 export const Home = () => {
+	const endDate = moment().subtract(14, "d");
+	console.log(endDate);
 	return (
 		<div>
 			<div className={styles.hero}>

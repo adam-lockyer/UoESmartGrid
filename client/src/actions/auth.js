@@ -18,7 +18,9 @@ export const loadUser = () => async (dispatch) => {
 			const res = await axios.get(
 				`${process.env.REACT_APP_API_URL}/api/auth/loadUser/${localStorage.token}`
 			);
-			dispatch({ type: USER_LOADED, payload: res.data });
+			if (res.data) {
+				dispatch({ type: USER_LOADED, payload: res.data });
+			}
 		} catch (error) {
 			dispatch({ type: AUTH_ERROR });
 		}

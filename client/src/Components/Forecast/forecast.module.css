@@ -10,16 +10,17 @@
 }
 
 .left {
-	flex: 0 0 32%;
+	flex: 0 0 15%;
 	display: block;
 	text-align: center;
 	justify-content: center;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	overflow-y: scroll;
+	padding: 1rem;
 }
 
 .right {
-	flex: 0 0 65%;
+	flex: 0 0 83%;
 	min-height: 600px;
 	overflow-y: scroll;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -38,11 +39,28 @@
 	padding-top: 5vh;
 }
 
-.roomNames {
-	display: grid;
-	justify-content: center;
+.container .left .roomNames {
+	display: flex;
+	flex-direction: column;
 	align-items: center;
-	height: 80%;
+}
+
+.roomNames div:first-of-type {
+	margin-top: 2rem;
+}
+
+.roomNames div {
+	display: block;
+	margin: 2rem;
+	padding: 1rem;
+	background: rgb(247, 247, 247);
+	/* border-bottom: 1px solid #333; */
+	width: 100%;
+	transition: all 0.25s;
+}
+
+.roomNames div:hover {
+	cursor: pointer;
 }
 
 .readingTabs {

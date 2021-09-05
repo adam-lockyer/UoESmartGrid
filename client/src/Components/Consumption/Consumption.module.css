@@ -13,7 +13,7 @@
 
 .container .Graph {
 	flex: 1;
-	max-width: 63%;
+	max-width: 83%;
 }
 
 .container .Boxed {
@@ -181,24 +181,36 @@
 	padding-right: 70px;
 }
 
-.roomActive {
-	background: white !important;
-	padding: 5px !important;
-	transform: translateY(5%);
+.container .BuildingImg .roomNames {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.container .BuildingImg .roomNames {
-	display: grid;
-	justify-content: center;
-	align-items: center;
-	height: 80%;
+.roomNames div:first-of-type {
+	margin-top: 2rem;
+}
+
+.roomNames div {
+	display: block;
+	margin: 2rem;
+	padding: 1rem;
+	background: rgb(247, 247, 247);
+	/* border-bottom: 1px solid #333; */
+	width: 100%;
+	transition: all 0.25s;
+}
+
+.roomNames div:hover {
+	cursor: pointer;
 }
 
 .container .BuildingImg {
 	display: block;
 	text-align: center;
 	justify-content: center;
-	flex: 0 0 35%;
+	flex: 0 0 15%;
+	padding: 1rem;
 	margin: 40px 0 0 20px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	height: calc(100vh - 150px);

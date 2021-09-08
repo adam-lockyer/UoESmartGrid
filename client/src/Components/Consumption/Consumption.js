@@ -9,7 +9,7 @@ import moment from "moment";
 const Consumption = () => {
 	let { building } = useParams();
 	//const currentDate = Date.now()
-	const currentDate = moment("2019-07-20 00:00").unix() * 1000;
+	const currentDate = moment().unix() * 1000;
 	const oneDayEpoch = 86400000;
 	const timeIntervals = [
 		{

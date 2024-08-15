@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import FolderIcon from "@material-ui/icons/Folder";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import HomeIcon from "@material-ui/icons/Home";
 import styles from "./BottomNavigation.module.css";
+
+import FolderIcon from '@mui/icons-material/Folder';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import HomeIcon from '@mui/icons-material/Home';
 
 const BottomNavigation = () => {
 	let loc = useLocation();

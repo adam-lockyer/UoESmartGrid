@@ -2,4 +2,37 @@
 	margin: 5px 10px;
 	padding: 8px 15px;
 	color: black;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.Login {
+	background-color:#2066d6 !important;
+	border-radius: 2px !important;
+	color:white !important;
+	text-transform: uppercase !important;
+	font-weight: normal !important;
+}
+
+.Login:hover {
+	background-color: #003cff !important;
+}
+
+.Logout {
+	border: 1px solid #2066d6 !important;
+	border-Color:#2066d6 !important;
+	background-Color: rgba(255,255,255, 0.4) !important;
+	color:#000000 !important;
+	border-Radius: 2px !important;
+	text-transform: uppercase !important;
+	font-weight: normal !important;
+}
+
+.Logout:hover {
+	background-Color: #d5d5d5cc !important;
+}
+
+.LogoLink{
+	padding: 15px 10px !important;
 }

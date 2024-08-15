@@ -23,7 +23,11 @@
     "influx": "^5.7.0",
     "influxdb-nodejs": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "mongodb": "^6.8.0",
+    "perf_hooks": "^0.0.1",
+    "react-devtools": "^5.3.1",
+    "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
     "concurrently": "^6.1.0",

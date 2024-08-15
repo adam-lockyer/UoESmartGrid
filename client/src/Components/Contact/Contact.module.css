@@ -1,0 +1,97 @@
+.hero {
+	height: calc(100vh-66px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.hero::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: -1;
+	display: block;
+	background-image: url('/src/exeter uni.png');
+	background-size:cover;
+	width: 100%;
+	height: 100%;
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+
+.contentSection {
+    display: inline-block;
+	align-items: center;
+	justify-content: center;
+    border-radius: 4px;
+    text-align: center !important;
+    min-width: 650px;
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 33px);
+    transform: translate(-50%, -50%);
+	background-color: #003b3c; /* Pastel beige background color */
+    color: #00dea5;
+    height: 80vh;
+    width: 80vw;
+}
+
+
+.Header{
+    min-width: 650px;
+    margin-top: 10vh;
+    margin-bottom: 7vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ContactMethods{
+    min-width: 650px;
+    margin-top: 7vh;
+    justify-content: center;
+    display: flex;
+    gap: 10vw;
+}
+
+.Method{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.address{
+    font-size: 100px !important;
+    background-color: #00dea5;
+    border-radius: 50%;
+    padding: 5%;
+    color: black;
+}
+
+.email{
+    font-size: 100px !important;
+    background-color: #00dea5;
+    border-radius: 50%;
+    padding: 5%;
+    color: black;
+}
+
+.phone{
+    font-size: 100px !important;
+    background-color: #00dea5;
+    border-radius: 50%;
+    padding: 5%;
+    color: black;
+}
+
+.divider {
+	border: 0;
+	border-top: 2px solid #00dea5;
+	margin: 20px 0; /* Adjust spacing as needed */
+  }

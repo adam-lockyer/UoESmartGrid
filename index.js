@@ -9,12 +9,15 @@ app.use(express.json({ extend: false }));
 app.use(cors());
 
 const Influx = require("influx");
+const connectDB = require("./lib/mongo");
+
 const influx = new Influx.InfluxDB({
 	host: "localhost",
 	port: 8086,
 	protocol: "http",
 	database: "SmartGrid",
 });
+
 // Define static files in the client
 app.use(express.static(path.join(__dirname, "../app/client/build")));
 // Define Routes

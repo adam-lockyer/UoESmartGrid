@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import ReactMapGL, { Popup, Marker, LinearInterpolator } from "react-map-gl";
+import ReactMapGL, { Popup, Marker } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import mapStyle from "./mapStyle.json";
-import { useHistory } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
+import PlaceIcon from '@mui/icons-material/Place';
 
 import styles from "./Map.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Map = () => {
 	const MAPBOX_TOKEN =
@@ -17,10 +19,10 @@ const Map = () => {
 		bearing: 0,
 		pitch: 0,
 		transitionDuration: 1000,
-		transitionInterpolator: new LinearInterpolator(),
 	});
-	const history = useHistory();
 	const [selectedLocation, setSelectedLocation] = useState({});
+
+	const navigate = useNavigate();
 
 	const originalLat = 50.7367;
 	const originalLong = -3.5345;
@@ -191,13 +193,12 @@ const Map = () => {
 			<div className={styles.map}>
 				<ReactMapGL
 					{...viewport}
-					width="100%"
-					height="calc(100vh - 66px)"
 					mapStyle={mapStyle}
 					onViewportChange={(nextViewport) =>
 						setViewport(nextViewport)
 					}
-					mapboxApiAccessToken={MAPBOX_TOKEN}
+					style={{width: '100vw', height: 'calc(100vh - 66px)'}}
+					mapboxAccessToken={MAPBOX_TOKEN}
 					dragPan={false}
 					scrollZoom={false}
 					touchZoom={false}
@@ -211,12 +212,12 @@ const Map = () => {
 									latitude={location.latitude}
 									longitude={location.longitude}
 								>
-									{/* <img
+									<img
 										onClick={() => clicked(location)}
 										className={styles.marker}
-										src={poiMarker}
+										src={PlaceIcon}
 										alt=""
-									/> */}
+									/>
 									<div
 										className={styles.poi}
 										onClick={() => clicked(location)}
@@ -250,7 +251,7 @@ const Map = () => {
 											>
 												<button
 													onClick={() =>
-														history.push(
+														navigate(
 															`/${location.tag}/Consumption`
 														)
 													}
@@ -259,7 +260,7 @@ const Map = () => {
 												</button>
 												<button
 													onClick={() =>
-														history.push(
+														navigate(
 															`/forecast/${location.tag}/`
 														)
 													}

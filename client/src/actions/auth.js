@@ -16,7 +16,7 @@ export const loadUser = () => async (dispatch) => {
 		setAuthToken(localStorage.token);
 		try {
 			const res = await axios.get(
-				`${process.env.REACT_APP_API_URL}/api/auth/loadUser/${localStorage.token}`
+				`${import.meta.env.VITE_API_URL}/api/auth/loadUser/${localStorage.token}`
 			);
 			if (res.data) {
 				dispatch({ type: USER_LOADED, payload: res.data });
@@ -40,7 +40,7 @@ export const login = (formData) => async (dispatch) => {
 	const body = JSON.stringify({ user, password });
 	try {
 		const res = await axios.post(
-			`${process.env.REACT_APP_API_URL}/api/auth/login`,
+			`${import.meta.env.VITE_API_URL}/api/auth/login`,
 			body,
 			config
 		);
@@ -48,7 +48,8 @@ export const login = (formData) => async (dispatch) => {
 		dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 		dispatch(loadUser());
 	} catch (error) {
-		const errors = error.response.data.errors;
+		console.log(error);
+		const errors = error.response?.data?.errors;
 		if (errors) {
 			errors.forEach((error) => toast.error(error.msg, "danger"));
 		}

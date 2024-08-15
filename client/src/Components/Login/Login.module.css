@@ -24,20 +24,71 @@
 }
 
 .loginPage .loginChild {
-	flex: 0 0 50%;
+	flex: 1 1 65%;
+}
+
+.loginPage .loginChild:first-of-type {
+	flex: 1 0 35%;
+	min-width: 300px;
+	background: #003b3c;
+	color: #00dea5;
 }
 
 .loginWrapper {
-	width: 60%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 6rem;
+	width: 80%;
+}
+
+.fields {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	width: 100%;
+}
+
+.input {
+	background: transparent;
+	color: #00dea5;
+	padding: 1rem;
+	outline: none;
+	border: 2px solid #00dea5;
+	width: 100%;
+	border-radius: 10rem;
+	text-align: center;
+	font-size: 1.2rem;
+}
+
+.input:focus, .input:active {
+	background-color: transparent;
+}
+
+.input::placeholder {
+	color: white;
+	opacity: 0.75;
 }
 
 .hero {
-	background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-		url("/src/exeter uni.png");
+	background-image: url("/src/exeter uni.png");
 	background-position: center;
 	background-size: cover;
 	display: flex;
 	align-items: center;
+	position: relative;
+}
+
+.hero::after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 65vw;
+	height: 100%;
+	background: linear-gradient(to right, #003b3c 0%, 70%, transparent);
 }
 
 .heroText {
@@ -52,6 +103,11 @@
 .heroText p {
 	margin-top: 20px;
 	font-size: 150%;
+}
+
+.logo {
+	width: 18rem;
+	height: 18rem;
 }
 
 @media screen and (max-width: 780px) {

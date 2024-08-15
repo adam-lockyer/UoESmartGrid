@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Consumption.module.css";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 import axios from "axios";
 import { ResponsiveLine } from "@nivo/line";
-import { useHistory } from "react-router-dom";
 import moment from "moment";
 
 const Consumption = () => {
@@ -67,7 +66,6 @@ const Consumption = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [selectedData, setSelectedData] = useState(false);
 	const [currentGrouping, setCurrentGrouping] = useState("");
-	const history = useHistory();
 
 	useEffect(async () => {
 		const res = await axios.get(
@@ -262,7 +260,7 @@ const Consumption = () => {
 								<button
 									className={styles.detailsButton}
 									onClick={() =>
-										history.push(
+										redirect(
 											`/room/${Room}/${selectedData.x}`
 										)
 									}

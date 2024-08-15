@@ -70,6 +70,77 @@
 	flex: 0 0 100%;
 }
 
+/* Content section with pastel background */
+.contentSection {
+	background-color: #003b3c; /* Pastel beige background color */
+	padding: 40px 10%;
+	text-align: left;
+}
+
+/* Content block styling */
+.contentBlockL {
+	margin-bottom: 40px;
+	margin-top: 40px;
+}
+
+.contentBlockL h4 {
+	font-size: 2rem;
+	color: #00dea5;
+	margin-bottom: 10px;
+}
+
+.contentBlockL p {
+	color: #fff6f6;
+	line-height: 1.6;
+	font-size: 16px;
+}
+
+.contentBlockL ul {
+	color: #fff6f6;
+	line-height: 1.6;
+	font-size: 16px;
+}
+
+/* Content block styling */
+.contentBlockR {
+	margin-bottom: 40px;
+	margin-top: 40px;
+}
+
+.contentBlockR h4 {
+	font-size: 2rem;
+	color: #00dea5;
+	margin-bottom: 10px;
+	text-align: right;
+}
+
+.contentBlockR p {
+	color: #fff6f6;
+	line-height: 1.6;
+	font-size: 16px;
+}
+
+.contentBlockR ul {
+	color: #fff6f6;
+	line-height: 1.6;
+	font-size: 16px;
+}
+
+/* Logo image styling */
+.logo {
+	max-width: 90%; /* Ensures the logo is responsive */
+	height: auto;
+	margin-bottom: 30px; /* Increase space between logo and button */
+	margin-top: 40px;
+}
+
+.divider {
+	border: 0;
+	border-top: 2px solid #00dea5;
+	margin: 20px 0; /* Adjust spacing as needed */
+  }
+
+
 @media screen and (max-width: 780px) {
 	.pageDesign {
 		display: block;

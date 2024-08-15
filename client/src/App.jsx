@@ -7,7 +7,7 @@ import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./util/setAuthToken";
 // Router
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // Notifications
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,13 +19,14 @@ import { Home } from "./Components/Home/Home";
 import Map from "./Components/Map/Map";
 import { Info } from "./Components/Info/Info";
 import Login from "./Components/Login/Login";
-import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import BottomNavigation from "./Components/Navigation/BottomNavigation/BottomNavigation";
 import TopNavigation from "./Components/Navigation/TopNavigation/TopNavigation";
 import Consumption from "./Components/Consumption/Consumption";
 import Detailed from "./Components/Detailed/detailed";
 import Forecast from "./Components/Forecast/forecast";
 import Logout from "./Components/Logout/Logout";
+import Contact from "./Components/Contact/Contact";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 
 // Check token
 if (localStorage.token) {
@@ -49,6 +50,9 @@ function App() {
 					pauseOnFocusLoss
 					draggable
 					pauseOnHover
+					style={{
+						top: '5rem',
+					}}
 				/>
 				<div className="App">
 					{!isMobile && <TopNavigation />}
@@ -58,28 +62,51 @@ function App() {
 						</>
 					)}
 				</div>
-				<Switch>
-					<Route path="/" component={Home} exact />
-					<PrivateRoute path="/map" component={Map} exact />
-					<Route path="/info" component={Info} exact />
-					<Route path="/login" component={Login} exact />
-					<PrivateRoute
+				<Routes>
+					<Route path="/" element={<Home />} exact />
+					<Route path="/info" element={<Info />} exact />
+					<Route path="/login" element={<Login />} exact />
+					<Route path="/Contact" element={<Contact />} exact />
+					<Route
 						path="/:building/Consumption"
-						component={Consumption}
+						element={
+								<PrivateRoute>
+									<Consumption />
+								</PrivateRoute>
+								}
 						exact
 					/>
-					<PrivateRoute
+					<Route
 						path="/room/:Room/:date"
-						component={Detailed}
+						element={
+								<PrivateRoute>
+									<Detailed />
+								</PrivateRoute>
+								}
 						exact
 					/>
-					<PrivateRoute
+					<Route
 						path="/forecast/:building"
-						component={Forecast}
+						element={
+								<PrivateRoute>
+									<Forecast />
+								</PrivateRoute>
+								}
 						exact
 					/>
-					<PrivateRoute path="/logout" component={Logout} exact />
-				</Switch>
+					
+					<Route path="/logout" element={<Logout />} exact />
+
+					<Route
+						path="/map" 
+						element={
+								<PrivateRoute>
+									<Map />
+								</PrivateRoute>
+								} 
+						exact 
+					/>
+				</Routes>
 			</Router>
 		</Provider>
 	);

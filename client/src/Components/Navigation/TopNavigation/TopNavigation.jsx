@@ -11,7 +11,7 @@ const TopNavigation = ({ isAuthenticated }) => {
 		<div className={styles.topNav}>
 			<Navbar defaultExpanded expand="sm" bg="light" variant="light">
 				<Navbar.Brand active={(pathLocation === "Map").toString()}>
-					<Link to="/Map">
+					<Link to="/Map" className={styles.LogoLink}>
 						<img
 							alt=""
 							src="/logo.png"
@@ -21,16 +21,17 @@ const TopNavigation = ({ isAuthenticated }) => {
 					</Link>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
-				<Navbar.Collapse id="responsive-navbar-nav">
-					<Nav className="mr-auto"></Nav>
-					<Nav className="justify-center-end">
-						<Link to="/">Home Page</Link>
+				<Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+					{/* First three links centered */}
+					<Nav className="mx-auto">
+						<Link to="/" style={{textDecoration: 'none', margin: '0 10px'}}>Home Page</Link>
+						<Link to="/Info" style={{textDecoration: 'none', margin: '0 10px'}}>Information</Link>
+						<Link to="/Contact" style={{textDecoration: 'none', margin: '0 10px'}}>Contact Us</Link>
 					</Nav>
-					<Nav className="justify-center-end">
-						<Link to="/Info">Infomation</Link>
-					</Nav>
-					<Nav className="justify-center-end">
-						{isAuthenticated && <Link to="/Logout">Logout</Link>}
+					{/* Last two links aligned to the end */}
+					<Nav>
+						{!isAuthenticated && <Link to="/Login" className={styles.Login}>Login</Link>}
+						{isAuthenticated && <Link to="/Logout" className={styles.Logout}>Logout</Link>}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>

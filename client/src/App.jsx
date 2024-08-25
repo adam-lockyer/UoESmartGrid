@@ -26,6 +26,7 @@ import Detailed from "./Components/Detailed/detailed";
 import Forecast from "./Components/Forecast/forecast";
 import Logout from "./Components/Logout/Logout";
 import Contact from "./Components/Contact/Contact";
+import RDFtest from "./Components/test_page/RDFtest.jsx";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 
 // Check token
@@ -67,6 +68,7 @@ function App() {
 					<Route path="/info" element={<Info />} exact />
 					<Route path="/login" element={<Login />} exact />
 					<Route path="/Contact" element={<Contact />} exact />
+					<Route path="/Test" element={<RDFtest/>} exact />
 					<Route
 						path="/:building/Consumption"
 						element={

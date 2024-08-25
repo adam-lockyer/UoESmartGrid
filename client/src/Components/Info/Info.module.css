@@ -72,9 +72,12 @@
 
 /* Content section with pastel background */
 .contentSection {
+	display: block;
 	background-color: #003b3c; /* Pastel beige background color */
 	padding: 40px 10%;
 	text-align: left;
+	justify-content: center;
+	align-items: center;
 }
 
 /* Content block styling */
@@ -132,6 +135,9 @@
 	height: auto;
 	margin-bottom: 30px; /* Increase space between logo and button */
 	margin-top: 40px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .divider {

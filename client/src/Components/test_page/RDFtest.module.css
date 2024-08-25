@@ -1,0 +1,18 @@
+.container {
+    display: grid;          /* Use CSS Grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusts number of columns */
+    justify-content: center; /* Center items horizontally */
+    gap: 20px;              /* Optional: space between the grid items */
+    padding: 20px;         /* Optional: padding around the container */
+}
+
+.lists {
+    display: flex;         /* Align the <p> elements horizontally */
+    flex-direction: column; /* Stack the <p> elements vertically */
+    align-items: center;   /* Center <p> elements horizontally within .lists */
+}
+
+p {
+    margin: 0;             /* Remove default margin */
+    padding: 20px;         /* Optional: padding for spacing */
+}

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index",
+    "server": "nodemon index --ignore ./ontology/",
     "start": "node index",
     "client": "npm start --prefix client/",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -26,11 +26,13 @@
     "moment": "^2.29.1",
     "mongodb": "^6.8.0",
     "perf_hooks": "^0.0.1",
+    "rdflib": "^2.2.35",
     "react-devtools": "^5.3.1",
+    "react-map-gl": "^7.1.7",
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
     "concurrently": "^6.1.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^3.1.4"
   }
 }

@@ -3,6 +3,14 @@
 # Environment Variables
 /config/default.json
 
+# Python packages
+ontology/scripts/env
+ontology/scripts/*.json
+
+# Ontology files
+*.rdf
+*.ttl
+
 # dependencies
 /node_modules
 /.pnp

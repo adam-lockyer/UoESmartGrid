@@ -8,17 +8,18 @@ const { join } = require('path');
 const rdf = require('rdflib');
 
 const URI = "http://www.semanticweb.org/al657/ontologies/2024/1/CREWW_Ontology_v6";
-const ontologyData = fs.readFileSync('./ontology/CREWW_Ontology_v9.rdf').toString();
+const ontologyData = fs.readFileSync('./ontology/CREWW_Ontology_Final.rdf').toString();
 const store = rdf.graph();
 rdf.parse(ontologyData, store, URI, 'application/rdf+xml')
 const RDF_Namespace = rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 const brick = rdf.Namespace("https://brickschema.org/schema/Brick#")
+const brickRef = rdf.Namespace("https://brickschema.org/schema/Brick/ref#")
 const owl = rdf.Namespace("http://www.w3_org/2002/07/owl#")
 const CREWW = rdf.Namespace("http://www.semanticweb.org/al657/ontologies/2024/1/CREWW_Ontology_v6#")
 const bot = rdf.Namespace("https://w3id.org/bot#")
 
-// /api/ontology/custom
-router.get("/custom", async (req, res, next) => {
+// /api/ontology/CREWW/custom
+router.get("/CREWW/custom", async (req, res, next) => {
     const queryString = `
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX Brick: <https://brickschema.org/schema/Brick#>
@@ -69,24 +70,59 @@ router.get("/custom", async (req, res, next) => {
 });
 
 
-// /api/ontology/sensors
-router.get('/sensors', (req, res) => {
+// /api/ontology/CREWW/sensors
+router.get('/CREWW/sensors', (req, res) => {
     try {
-        const sensorData = store.statementsMatching(null, RDF_Namespace('type'), CREWW('viewSensors'), null)
+        const device = req.query.toPass;
 
-        const parsedSensors = sensorData.map((datum) => datum.subject.toString().split('#')[1].slice(0, -1));
+        if (!device) {
+            return res.status(400).send('Device parameter is required');
+        }
+        const sensorData = store.statementsMatching(CREWW(device), brick('hasPoint'), null, null)
+
+        const parsedSensors = sensorData.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
         return res.status(200).json({ sensors: parsedSensors});
     } catch (error) {
         return res.status(500).send('Internal Server Error');
     }
 })
 
-// /api/ontology/devices
-router.get('/devices', (req, res) => {
+// /api/ontology/CREWW/ref
+router.get('/CREWW/ref', (req, res) => {
     try {
-        const deviceData = store.statementsMatching(null, RDF_Namespace('type'), CREWW('viewDevices'), null)
+        const sensor = req.query.toPass;
+        if (!sensor) {
+            return res.status(400).send('Sensor parameter is required');
+        }
 
-        const parsedDevices = deviceData.map((datum) => datum.subject.toString().split('#')[1].slice(0, -1));
+        const mongoReference = store.statementsMatching(CREWW(sensor), brickRef('hasTimeseriesReference'), null, null);
+        console.log("before query")
+        const mongoID = store.statementsMatching(CREWW(sensor), brickRef('hasTimeseriesId'), null, null);
+        console.log("after query",mongoID)
+        const parsedReference = mongoReference.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
+        console.log("before id parse")
+        const parsedID = mongoID.map((datum) => datum.object.toString());
+        console.log("after id parse", parsedID)
+
+
+        return res.status(200).json({ mongoRef: parsedReference, mongoID: parsedID});
+    } catch (error) {
+        return res.status(500).send('Internal Server Error');
+    }
+})
+
+// /api/ontology/CREWW/devices
+router.get('/CREWW/devices', (req, res) => {
+    try {
+        const room = req.query.toPass;
+
+        if (!room) {
+            return res.status(400).send('Room parameter is required');
+        }
+
+        const deviceData = store.statementsMatching(CREWW(room), brick('hasPart'), null, null)
+        const parsedDevices = deviceData.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
+
         return res.status(200).json({ devices: parsedDevices});
     } catch (error) {
         return res.status(500).send('Internal Server Error');
@@ -95,11 +131,10 @@ router.get('/devices', (req, res) => {
 
 module.exports = router;
 
-// /api/ontology/floors
-router.get('/floors', (req, res) => {
+// /api/ontology/CREWW/floors
+router.get('/CREWW/floors', (req, res) => {
     try {
         const floorData = store.statementsMatching(CREWW('CREWW'), bot('hasStorey'), null, null)
-
         const parsedFloors = floorData.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
         return res.status(200).json({ floors: parsedFloors});
     } catch (error) {
@@ -109,10 +144,10 @@ router.get('/floors', (req, res) => {
 
 module.exports = router;
 
-// /api/ontology/rooms
-router.get('/rooms', (req, res) => {
+// /api/ontology/CREWW/rooms
+router.get('/CREWW/rooms', (req, res) => {
     try {
-        const floor  = req.query.floor;
+        const floor = req.query.toPass;
 
         if (!floor) {
             return res.status(400).send('Floor parameter is required');

@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {graph, lit, namedNode, parse, serialize, st, Util, Namespace} from "rdflib";
-import * as rdf from "rdflib";
-
 import styles from "./RDFtest.module.css";
 import axios from "axios";
 import { useQuery } from "../../hook/useQuery";
@@ -15,12 +12,12 @@ const RDFtest = () => {
     const [rooms, setRooms] = useState([]);
 
     const [loading, setLoading] = useState(false);
-    const floor = "B0"
+    const toPass = "B0"
     useEffect(() => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/ontology/sensors`
+                    `${import.meta.env.VITE_API_URL}/api/ontology/CREWW/sensors`
                 );
                 setSensors(res.data.sensors);   
             } catch (error) {
@@ -36,7 +33,7 @@ const RDFtest = () => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/ontology/devices`
+                    `${import.meta.env.VITE_API_URL}/api/ontology/CREWW/devices`
                 );
                 setDevices(res.data.devices);   
             } catch (error) {
@@ -48,15 +45,15 @@ const RDFtest = () => {
         getData();
     }, []);
 
-    const { data, loading: floorsLoading } = useQuery('/api/ontology/floors');
+    const { data, loading: floorsLoading } = useQuery('/api/ontology/CREWW/floors');
     const floors = data?.floors;
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/ontology/rooms`, {
-                        params: {floor}
+                    `${import.meta.env.VITE_API_URL}/api/ontology/CREWW/rooms`, {
+                        params: {toPass}
                     }
                 );
                 setRooms(res.data.rooms);   
@@ -73,7 +70,7 @@ const RDFtest = () => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/ontology/custom`
+                    `${import.meta.env.VITE_API_URL}/api/ontology/CREWW/custom`
                 );
                 setCustomData(res.data);
             } catch (error) {

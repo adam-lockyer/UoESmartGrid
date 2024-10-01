@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export const useQuery = (url) => {
+export const useQuery = (url, toPass = undefined) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -9,17 +9,18 @@ export const useQuery = (url) => {
         const getData = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}${url}`
+                    `${import.meta.env.VITE_API_URL}${url}`,
+                        {params: { toPass }}
                 );
                 setData(res.data);   
             } catch (error) {
-                console.error(error);
+                console.log(error);
             } finally {
                 setLoading(false);
             }
         }
         getData();
-    }, []);
+    }, [url]);
 
     return {
         data,

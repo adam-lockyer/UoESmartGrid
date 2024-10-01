@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { connect } from "react-redux";
@@ -16,11 +16,13 @@ const Login = ({ login, isAuthenticated }) => {
 	function validateForm() {
 		return user.length > 0 && password.length > 0;
 	}
-
-	if (isAuthenticated) {
-		navigate('/Map');
-		return;
-	}
+	
+    useEffect(() => {
+		if (isAuthenticated) {
+			navigate('/Map');
+			return;
+		}
+	}, [isAuthenticated, navigate]);
 
 	function handleSubmit() {
 		login([user, password]);

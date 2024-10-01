@@ -1,287 +1,205 @@
 .container {
-	display: flex;
-	width: 100%;
+    height: calc(100vh - 68px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	background-color: #ffffff;
 }
 
-.container p {
-	margin: 0;
-}
-
-.container > div {
-	max-height: calc(100vh - 66px);
-}
-
-.container .Graph {
-	flex: 1;
-	max-width: 83%;
-}
-
-.container .Boxed {
-	margin: 40px 10px 0 10px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	height: calc(100vh - 150px);
-}
-
-.detailsButton {
-	right: 60px;
-	bottom: 80px;
-	border-radius: 5px;
-	border: solid 1px black;
-	box-shadow: 2px 2px 2px rgb(131, 131, 131);
-}
-
-.container .BuildingImg .Prompt {
-	margin: 40px auto 0 auto;
-	width: 80%;
-}
-.container .Graph .Tabs {
-	display: flex;
-	width: 100%;
-	padding: 10px 0px 0px 20px;
-}
-
-.Tabs button {
-	padding: 5px;
-	background: rgb(228, 226, 226);
-	outline: none;
-}
-
-.active {
-	background: white !important;
-	border-bottom: 0;
-	font-size: 120%;
-	padding: 5px !important;
-	transform: translateY(5%);
-}
-
-.datePickerContainer {
-	text-align: center;
-	margin: 20px;
-}
-
-.datePickerContainer input {
-	width: 50%;
-	margin: 0;
-}
-
-.modal {
-	flex-direction: column;
-}
-
-.dpContainer {
-	text-align: center;
-	margin-top: 30px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-}
-
-.customDateModal {
-	z-index: 20;
+.loader {
+	width: 100px;
+	height: 100px;
+	border: 6px solid #2066d6;
+	border-radius: 50%;
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	animation: rotation 12s linear infinite;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 20px 20px, 
+				rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+				rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+				rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+				rgba(0, 0, 0, 0.09) 0px -3px 5px,
+				rgba(0, 0, 0, 0.25) 0px 10px 10px inset,
+				rgba(0, 0, 0, 0.12) 0px -10px 15px inset,
+				rgba(0, 0, 0, 0.12) 0px 3px 5px inset,
+				rgba(0, 0, 0, 0.17) 0px 8px 10px inset,
+				rgba(0, 0, 0, 0.09) 0px -2px 4px inset;
+  }
+  .loader::after {
+	content: '';  
+	box-sizing: border-box;
 	position: absolute;
-	top: 50%;
 	left: 50%;
+	top: 50%;
 	transform: translate(-50%, -50%);
-	height: 350px;
-	width: 500px;
-	background: white;
-	border-radius: 20px;
-	display: flex;
-	justify-content: space-evenly;
-}
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	border: 6px solid;
+	border-color: #00dea5 transparent;
+  }
+  
+  @keyframes rotation {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  } 
 
-.customDateModal span {
-	font-weight: bold;
-	letter-spacing: 0.5px;
-	font-size: 1.1rem;
-}
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
 
-.dataContainer {
-	height: 30%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-}
-
-.customDateModal img {
-	max-width: 20px;
-	position: absolute;
-	right: 0;
-	top: 0;
-	margin: 20px;
-	cursor: pointer;
-}
-
-.customDateModal button {
-	display: block;
-	margin: 30px auto;
-	font-size: 120%;
-	border: 0;
+.dataList{
+	height: 80vh;
+	width: 25%;
+	min-width: 300px;
 	border-radius: 10px;
-	padding: 10px 20px;
-	width: auto;
-	box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
-}
-.darken {
-	width: 100vw;
-	height: 100vh;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-	z-index: 19;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-.datePickerContainer p {
-	margin: 0 20px;
-	font-size: 120%;
-}
-.datepicker {
-	font-size: 120%;
-	transform: translateY(15%);
 	margin-right: 20px;
-}
-
-.container .Graph .intervalTabs {
-	position: absolute;
-	right: 60px;
-}
-.container .Graph .readingTabs {
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+	background-color: #003b3c;
+	display: flex;
+	flex-direction: column;
 	position: relative;
-	left: 10px;
-}
-
-.container .GraphStyling {
-	height: 80%;
-	width: 100%;
-	display: block;
 	justify-content: center;
 	align-items: center;
-	margin: 15px 0 0px 15px;
-	overflow: visible;
+}
+.backButtonContainer {
+	text-align: left;
+	padding: 15px;
+	border-radius: 6px;
+	align-self: flex-start;
+	align-self: flex-start;
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+.backButton {
+	width: 75px;
+	text-align: center;
+	border-radius: 15px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	background-Color: #2066d6;
+	border-Color: #325de6;
+	color: #003b3c;
+	font-Family: Montserrat;
+	color: white;
+	align-self: flex-start;
+	justify-self: left;
+	padding-right: 10px;
+}
+
+.backButton:hover {
+    cursor: pointer;
+    background-Color: #003cff;
+}
+
+.resultsContainer{
+	height: 65vh;
+	max-height: 70vh;
+	overflow-y: auto;
 	overflow-x: hidden;
-}
-
-.noData {
-	position: relative;
-	top: 50%;
-	left: 50%;
-	transform: translate(-10%, -50%);
-	width: 50%;
-	margin: -15px 0 0 -15px;
-}
-
-.BuildingImg button {
-	padding: 5px;
-	background: rgb(228, 226, 226);
-	outline: none;
-}
-
-.groupingPrompt {
-	text-align: right;
-	padding-right: 70px;
-}
-
-.container .BuildingImg .roomNames {
+	text-align: center;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	text-align: center;
+	scroll-snap-type: y mandatory;
+	padding-bottom: 20px;
+}	
+
+.result{
+	font-Family: Montserrat;
+	width: 80%;
+	min-height: 44px;
+	border-radius: 6px;
+	padding: 10px;
+	margin-bottom: 8px;
+	background-Color: #00dea5;
+	border-Color: #00dea5;
+	color: #003b3c;
+	scroll-snap-align: start;
+	scroll-snap-stop: always;
+	flex: 0 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.roomNames div:first-of-type {
-	margin-top: 2rem;
-}
-
-.roomNames div {
-	display: block;
-	margin: 2rem;
-	padding: 1rem;
-	background: rgb(247, 247, 247);
-	/* border-bottom: 1px solid #333; */
-	width: 100%;
-	transition: all 0.25s;
-}
-
-.roomNames div:hover {
+.result:hover {
 	cursor: pointer;
+	background-Color: #00b284;
 }
 
-.container .BuildingImg {
-	display: block;
+.listTitle{
 	text-align: center;
-	justify-content: center;
-	flex: 0 0 15%;
-	padding: 1rem;
-	margin: 40px 0 0 20px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	height: calc(100vh - 150px);
+	padding-top: 10px;
+	padding-bottom: 20px;
+	font-size: 1.5rem;
+	font-weight: 500;
+	color: 	white;
+	;
 }
-.xAxis {
+
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.dataGraph{
+	height: 80vh;
+	width: 70%;
+	min-width: 600px;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+	background-color: #003b3c;
+}
+
+.graphContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.loadingDisplaying {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+.loadingText {
+    margin-top: 10px;
+	padding: 20px;
+	font-size: 1.5rem;
+	color: white;
+}
+
+.graphDisplaying{
+	color: white;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+.animationContainer{
 	display: flex;
-	justify-content: space-evenly;
-	margin: 0 auto;
-	width: 10%;
-	font-size: 75%;
-	/* white-space: nowrap;
-	transform: translateY(-100%) translateX(-3%); */
-	transform: translateY(-100%);
+	flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-.xAxis p {
-	transform: rotate(-80deg);
-	margin: 0;
-	text-align: center;
-}
 
-.tooltip {
-	background: rgba(255, 255, 255, 0.95);
-	padding: 0.5rem 1rem;
-	border-radius: 5px;
-	width: 250px;
-	text-align: center;
-	border: 2px solid rgb(61, 61, 61);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: 0.3s;
-}
-
-.tooltip .square {
-	flex: 1 0 20px;
-	margin-right: 10px;
-}
-
-.tooltip .paragraphs {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-.translatedOnRight {
-	transform: translateX(-125px);
-}
-
-.translatedOnLeft {
-	transform: translateX(125px);
-}
-
-@media screen and (max-width: 1400px) {
-	.container .Graph .intervalTabs {
-		font-size: 80%;
-	}
-	.container .Graph .readingTabs {
-		font-size: 80%;
-	}
-}
-
-@media screen and (max-width: 1100px) {
-	.container .Graph .intervalTabs {
-		font-size: 60%;
-	}
-	.container .Graph .readingTabs {
-		font-size: 60%;
-	}
-}
-
-.container > div {
-	max-height: calc(100vh - 66px);
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
 }

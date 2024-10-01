@@ -1,0 +1,294 @@
+.container {
+	display: flex;
+	width: 100%;
+}
+
+.container p {
+	margin: 0;
+}
+
+.container > div {
+	max-height: calc(100vh - 66px);
+}
+
+.container > *:nth-of-type(2) {
+	flex: 1;
+	max-width: 83%;
+}
+
+.container .Boxed {
+	margin: 40px 10px 0 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	height: calc(100vh - 150px);
+}
+
+.detailsButton {
+	right: 60px;
+	bottom: 80px;
+	border-radius: 5px;
+	border: solid 1px black;
+	box-shadow: 2px 2px 2px rgb(131, 131, 131);
+}
+
+.container .BuildingImg .Prompt {
+	margin: 40px auto 0 auto;
+	width: 80%;
+}
+.container .Graph .Tabs {
+	display: flex;
+	width: 100%;
+	padding: 10px 0px 0px 20px;
+}
+
+.Tabs button {
+	padding: 5px;
+	background: rgb(228, 226, 226);
+	outline: none;
+}
+
+.active {
+	background: white !important;
+	border-bottom: 0;
+	font-size: 120%;
+	padding: 5px !important;
+	transform: translateY(5%);
+}
+
+.datePickerContainer {
+	text-align: center;
+	margin: 20px;
+}
+
+.datePickerContainer input {
+	width: 50%;
+	margin: 0;
+}
+
+.modal {
+	flex-direction: column;
+}
+
+.dpContainer {
+	text-align: center;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.customDateModal {
+	z-index: 20;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 350px;
+	width: 500px;
+	background: white;
+	border-radius: 20px;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.customDateModal span {
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	font-size: 1.1rem;
+}
+
+.dataContainer {
+	height: 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.customDateModal img {
+	max-width: 20px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 20px;
+	cursor: pointer;
+}
+
+.customDateModal button {
+	display: block;
+	margin: 30px auto;
+	font-size: 120%;
+	border: 0;
+	border-radius: 10px;
+	padding: 10px 20px;
+	width: auto;
+	box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+.darken {
+	width: 100vw;
+	height: 100vh;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+	z-index: 19;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.datePickerContainer p {
+	margin: 0 20px;
+	font-size: 120%;
+}
+.datepicker {
+	font-size: 120%;
+	transform: translateY(15%);
+	margin-right: 20px;
+}
+
+.container .Graph .intervalTabs {
+	position: absolute;
+	right: 60px;
+}
+.container .Graph .readingTabs {
+	position: relative;
+	left: 10px;
+}
+
+.container .GraphStyling {
+	height: 80%;
+	width: 100%;
+	display: block;
+	justify-content: center;
+	align-items: center;
+	margin: 15px 0 0px 15px;
+	overflow: visible;
+	overflow-x: hidden;
+}
+
+.noData {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-10%, -50%);
+	width: 50%;
+	margin: -15px 0 0 -15px;
+}
+
+.BuildingImg button {
+	padding: 5px;
+	background: rgb(228, 226, 226);
+	outline: none;
+}
+
+.groupingPrompt {
+	text-align: right;
+	padding-right: 70px;
+}
+
+.container .BuildingImg .roomNames {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.roomNames div:first-of-type {
+	margin-top: 2rem;
+}
+
+.roomNames {
+    max-height: 90%; /* Set this to whatever height you want */
+    overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.roomNames div {
+	display: block;
+	margin: 2rem;
+	padding: 1rem;
+	background: rgb(247, 247, 247);
+	/* border-bottom: 1px solid #333; */
+	width: 100%;
+	transition: all 0.25s;
+	color: black;
+}
+
+.roomNames div:hover {
+	cursor: pointer;
+}
+
+.container .BuildingImg {
+	display: block;
+	text-align: center;
+	justify-content: center;
+	flex: 0 0 15%;
+	padding: 1rem;
+	margin: 40px 0 0 20px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	height: calc(100vh - 150px);
+}
+.xAxis {
+	display: flex;
+	justify-content: space-evenly;
+	margin: 0 auto;
+	width: 10%;
+	font-size: 75%;
+	/* white-space: nowrap;
+	transform: translateY(-100%) translateX(-3%); */
+	transform: translateY(-100%);
+}
+
+.xAxis p {
+	transform: rotate(-80deg);
+	margin: 0;
+	text-align: center;
+}
+
+.tooltip {
+	background: rgba(255, 255, 255, 0.95);
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	width: 250px;
+	text-align: center;
+	border: 2px solid rgb(61, 61, 61);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.3s;
+}
+
+.tooltip .square {
+	flex: 1 0 20px;
+	margin-right: 10px;
+}
+
+.tooltip .paragraphs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.translatedOnRight {
+	transform: translateX(-125px);
+}
+
+.translatedOnLeft {
+	transform: translateX(125px);
+}
+
+@media screen and (max-width: 1400px) {
+	.container .Graph .intervalTabs {
+		font-size: 80%;
+	}
+	.container .Graph .readingTabs {
+		font-size: 80%;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.container .Graph .intervalTabs {
+		font-size: 60%;
+	}
+	.container .Graph .readingTabs {
+		font-size: 60%;
+	}
+}
+
+.container > div {
+	max-height: calc(100vh - 66px);
+}

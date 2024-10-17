@@ -79,7 +79,6 @@ router.get('/CREWW/sensors', (req, res) => {
             return res.status(400).send('Device parameter is required');
         }
         const sensorData = store.statementsMatching(CREWW(device), brick('hasPoint'), null, null)
-
         const parsedSensors = sensorData.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
         return res.status(200).json({ sensors: parsedSensors});
     } catch (error) {
@@ -96,14 +95,9 @@ router.get('/CREWW/ref', (req, res) => {
         }
 
         const mongoReference = store.statementsMatching(CREWW(sensor), brickRef('hasTimeseriesReference'), null, null);
-        console.log("before query")
         const mongoID = store.statementsMatching(CREWW(sensor), brickRef('hasTimeseriesId'), null, null);
-        console.log("after query",mongoID)
         const parsedReference = mongoReference.map((datum) => datum.object.toString().split('#')[1].slice(0, -1));
-        console.log("before id parse")
         const parsedID = mongoID.map((datum) => datum.object.toString());
-        console.log("after id parse", parsedID)
-
 
         return res.status(200).json({ mongoRef: parsedReference, mongoID: parsedID});
     } catch (error) {

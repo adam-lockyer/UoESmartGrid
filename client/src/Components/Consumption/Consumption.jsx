@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import RDFQueryResults from './RDFQueryResults/RDFQueryResults';
 import SensorDataGraph from './SensorDataGraph/SensorDataGraph';
-
+import Loading from "../Loading/Loading";
 import styles from './Consumption.module.css';
 import { useParams } from 'react-router-dom';
 
@@ -16,7 +16,16 @@ const Consumption = () => {
         <RDFQueryResults setSensor={setSensor} building={building} />
       </div>
       <div className={styles.dataGraph}>
-        <SensorDataGraph building={building} sensor={sensor} />
+        {sensor ? (
+          <SensorDataGraph building={building} sensor={sensor} />
+          ) : (
+            <div className={styles.loadingDisplaying}>
+              <Loading size="large" />
+              <div className={styles.loadingText}>Waiting for Selection...</div>
+            </div>
+          )
+        }
+        
       </div>
     </div>
   )

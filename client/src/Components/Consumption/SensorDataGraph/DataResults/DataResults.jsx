@@ -10,8 +10,9 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TextField, DialogContent, Typography } from '@mui/material';
+import { TextField, DialogContent, Typography, Box } from '@mui/material';
 import dayjs from 'dayjs';
+import Icon from '../../../Icon/Icon';
 
 const filterRows = (data, x) => {
     return data.filter((_, index) => index % x === 0);
@@ -21,7 +22,9 @@ const DataResults = ({ selectedSensor, queryData }) => {
     const graphTitle = (selectedSensor.replace(/_/g, " ")).split('-')[0];
     const { data, loading } = useQuery(`/api/mongoPull/sensor`, queryData);
     const graphRef = useRef(null)
+    console.log("see graphRef here:", graphRef)
     const { width, height } = useContainerDimensions(graphRef)
+    console.log("see width - height here:", width, "-", height)
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
     const intervalData = {text: ['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '7d'], interval: [5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080]}
@@ -103,6 +106,17 @@ const DataResults = ({ selectedSensor, queryData }) => {
         setSelectedIndex(index);
         console.log(`Current selected index: ${index}`);
     };
+
+    if (!data || !data?.length) {
+        return (
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" width="100%" height="100%">
+                <Icon iconKey="search_off" color="white" fontSize="4rem" />
+                <Box color="white" fontSize="1.5rem">
+                    No Data Returned
+                </Box>
+            </Box>
+        )
+    }
 
     return (
         <div className={styles.graphContainer}>

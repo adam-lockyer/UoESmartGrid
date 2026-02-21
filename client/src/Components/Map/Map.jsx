@@ -111,20 +111,11 @@ const Map = () => {
 												<button
 													onClick={() =>
 														navigate(
-															`/${location.tag}/Consumption`
+															`/${location.tag}/Dashboard`
 														)
 													}
 												>
-													View Consumptions
-												</button>
-												<button
-													onClick={() =>
-														navigate(
-															`/forecast/${location.tag}/`
-														)
-													}
-												>
-													View Consumption Forecast
+													Open Building Dashboard
 												</button>
 											</div>
 										</div>

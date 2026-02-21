@@ -5,8 +5,8 @@ export const useContainerDimensions = myRef => {
   
     useEffect(() => {
       const getDimensions = () => ({
-        width: myRef.current.offsetWidth,
-        height: myRef.current.offsetHeight
+        width: myRef.current?.offsetWidth || 0,
+        height: myRef.current?.offsetHeight || 0
       })
   
       const handleResize = () => {
@@ -22,7 +22,7 @@ export const useContainerDimensions = myRef => {
       return () => {
         window.removeEventListener("resize", handleResize)
       }
-    }, [myRef])
+    }, [])
   
     return dimensions;
-  };
+};

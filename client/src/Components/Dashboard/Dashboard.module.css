@@ -1,0 +1,24 @@
+.container {
+    height: calc(100vh - 68px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	background-color: #ffffff;
+}
+
+.gridContainer{
+	height: 80vh;
+	width: 90%;
+	min-width: 600px;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+	background-color: #003b3c;
+}
+
+.graphDisplaying {
+    color: #00dea5 !important;
+	font-size: 0.1rem;
+    width: 95%;
+    height: 80%;
+}

@@ -4,10 +4,10 @@ import SensorDataGraph from './SensorDataGraph/SensorDataGraph';
 import Loading from "../Loading/Loading";
 import styles from './Consumption.module.css';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Consumption = () => {
-
-  let { building } = useParams();
+  const { building } = useParams();
   const [sensor, setSensor] = useState(null);
 
   return (
@@ -25,7 +25,6 @@ const Consumption = () => {
             </div>
           )
         }
-        
       </div>
     </div>
   )

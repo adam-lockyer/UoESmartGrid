@@ -5,7 +5,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 
 import styles from "./Info.module.css";
 
-export const Info = () => {
+const Info = () => {
 	return (
 	<div>
 		<div className={styles.contentSection}>
@@ -90,3 +90,5 @@ export const Info = () => {
 	</div>
 	);
 };
+
+export default Info;

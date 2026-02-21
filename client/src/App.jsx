@@ -17,7 +17,7 @@ import { isMobile } from "react-device-detect";
 // Components
 import { Home } from "./Components/Home/Home";
 import Map from "./Components/Map/Map";
-import { Info } from "./Components/Info/Info";
+import Info from "./Components/Info/Info";
 import Login from "./Components/Login/Login";
 import BottomNavigation from "./Components/Navigation/BottomNavigation/BottomNavigation";
 import TopNavigation from "./Components/Navigation/TopNavigation/TopNavigation";
@@ -28,6 +28,8 @@ import Logout from "./Components/Logout/Logout";
 import Contact from "./Components/Contact/Contact";
 import RDFtest from "./Components/test_page/RDFtest.jsx";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import Dashboard from "./Components/Dashboard/Dashboard.jsx";
+import { Box } from "@mui/material";
 
 // Check token
 if (localStorage.token) {
@@ -63,52 +65,63 @@ function App() {
 						</>
 					)}
 				</div>
-				<Routes>
-					<Route path="/" element={<Home />} exact />
-					<Route path="/info" element={<Info />} exact />
-					<Route path="/login" element={<Login />} exact />
-					<Route path="/Contact" element={<Contact />} exact />
-					<Route path="/Test" element={<RDFtest/>} exact />
-					<Route
-						path="/:building/Consumption"
-						element={
-								<PrivateRoute>
-									<Consumption />
-								</PrivateRoute>
-								}
-						exact
-					/>
-					<Route
-						path="/room/:Room/:date"
-						element={
-								<PrivateRoute>
-									<Detailed />
-								</PrivateRoute>
-								}
-						exact
-					/>
-					<Route
-						path="/forecast/:building"
-						element={
-								<PrivateRoute>
-									<Forecast />
-								</PrivateRoute>
-								}
-						exact
-					/>
-					
-					<Route path="/logout" element={<Logout />} exact />
+				<Box maxHeight="calc(100vh - 68px)">
+					<Routes>
+						<Route path="/" element={<Home />} exact />
+						<Route path="/info" element={<Info />} exact />
+						<Route path="/login" element={<Login />} exact />
+						<Route path="/Contact" element={<Contact />} exact />
+						<Route path="/Test" element={<RDFtest/>} exact />
+						<Route
+							path="/:building/Consumption"
+							element={
+									<PrivateRoute>
+										<Consumption />
+									</PrivateRoute>
+									}
+							exact
+						/>
+						<Route
+							path="/:building/Dashboard"
+							element={
+									<PrivateRoute>
+										<Dashboard />
+									</PrivateRoute>
+									}
+							exact
+						/>
+						<Route
+							path="/room/:Room/:date"
+							element={
+									<PrivateRoute>
+										<Detailed />
+									</PrivateRoute>
+									}
+							exact
+						/>
+						<Route
+							path="/forecast/:building"
+							element={
+									<PrivateRoute>
+										<Forecast />
+									</PrivateRoute>
+									}
+							exact
+						/>
+						
+						<Route path="/logout" element={<Logout />} exact />
 
-					<Route
-						path="/map" 
-						element={
-								<PrivateRoute>
-									<Map />
-								</PrivateRoute>
-								} 
-						exact 
-					/>
-				</Routes>
+						<Route
+							path="/map" 
+							element={
+									<PrivateRoute>
+										<Map />
+									</PrivateRoute>
+									} 
+							exact 
+						/>
+					</Routes>
+				</Box>
 			</Router>
 		</Provider>
 	);

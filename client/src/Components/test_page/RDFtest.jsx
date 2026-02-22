@@ -45,7 +45,7 @@ const RDFtest = () => {
         getData();
     }, []);
 
-    const { data, loading: floorsLoading } = useQuery('/api/ontology/CREWW/floors');
+    const { data, loading: floorsLoading } = useQuery({url: '/api/ontology/CREWW/floors'});
     const floors = data?.floors;
 
     useEffect(() => {

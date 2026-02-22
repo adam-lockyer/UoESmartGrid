@@ -5,8 +5,7 @@ export const datetimeDataFilter = (data, intervalMinutes) => {
   let lastTimestamp = null;
 
   data.forEach((item) => {
-    const currentTime = new Date(item.datetime).getTime();
-
+    const currentTime = new Date(item.datetime).setSeconds(0, 0);
     if (!lastTimestamp || (currentTime - lastTimestamp) >= intervalMinutes * 60 * 1000) {
       filteredData.push(item);
       lastTimestamp = currentTime;

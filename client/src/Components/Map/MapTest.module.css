@@ -1,0 +1,10 @@
+.mapContainer {
+    height: 100%;
+    background-color: lightblue; /* Main div background color */
+    position: relative; /* Relative positioning for the main div */
+  }
+
+.map {
+    height: calc(100vh - 68px);
+    width: 100vw;
+}

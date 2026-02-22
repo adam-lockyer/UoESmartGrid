@@ -2,42 +2,49 @@ import React, { useState } from 'react';
 import { Button, Box, Grid, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { INTERVALS_TEXT, MAX_DATAPOINTS } from '../../util/constants/consumption';
 
 
-const Carousel = ({ items, onIndexChange }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+const Carousel = ({ intervals, onIndexChange, selectedIntervalIndex }) => {
+    const isPrevDisabled = intervals[selectedIntervalIndex - 1].length > MAX_DATAPOINTS;
 
     const handleNext = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === items.length - 1 ? 0 : prevIndex + 1
-        );
-        onIndexChange(prevIndex);
+        if (selectedIntervalIndex === intervals.length - 1) return;
+        onIndexChange(selectedIntervalIndex + 1);
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? items.length - 1 : prevIndex - 1
-        );
-        onIndexChange(prevIndex);
+        if (selectedIntervalIndex === 0) return;
+        if (isPrevDisabled) return;
+        onIndexChange(selectedIntervalIndex - 1);
+    };
+
+    console.log(intervals);
+
+    const prevDisabledStyles = {
+        cursor: 'auto',
+        opacity: 0.5,
+        pointerEvents: 'none',
     };
 
     return (
         <Box             
             sx={{ 
-            width: '75px', 
-            textAlign: 'center', 
-            margin: 'auto', 
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '60px',
-            marginLeft:'10px',
-            marginRight:'20px',
-            color:'#ffffff',
+                width: '75px', 
+                textAlign: 'center', 
+                margin: 'auto', 
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '60px',
+                marginLeft:'10px',
+                marginRight:'20px',
+                color:'#ffffff',
+                fontSize: '1.5rem'
             }}>
-            <ArrowBackIosIcon onClick={handlePrev} sx={{ cursor: 'pointer' }}></ArrowBackIosIcon>
-            <Typography variant="h5" sx={{ paddingRight: '5px' }}>{items[currentIndex]}</Typography>
+            <ArrowBackIosIcon onClick={handlePrev} sx={{ cursor: 'pointer', ...(isPrevDisabled && prevDisabledStyles)}}></ArrowBackIosIcon>
+            <Box sx={{ paddingRight: '5px' }}>{INTERVALS_TEXT[selectedIntervalIndex]}</Box>
             <ArrowForwardIosIcon onClick={handleNext} sx={{ cursor: 'pointer' }}></ArrowForwardIosIcon>
         </Box>
     );

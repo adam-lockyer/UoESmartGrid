@@ -1,6 +1,7 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line'
 import styles from "./LineGraph.module.css";
+import { Box } from '@mui/material';
 
 const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight }) => (
     <ResponsiveLine
@@ -12,14 +13,19 @@ const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight }) => 
             data: { xFormatted, yFormatted },
         },
     }) => {
+        const moveModifier = (x / graphWidth) * 125;
+        console.log(graphWidth)
+        console.log(moveModifier);
+
+
+        // !!! FIX TRANSLATION OF TOOLTIP
         return (
-            <div className={`${styles.toolTipContainer} 
-                    ${x > graphWidth*0.66 && styles.translatedOnRight} 
-                    ${x < graphWidth*0.33 && styles.translatedOnLeft}
-                `}>
+            <Box className={`${styles.toolTipContainer}`} sx={{
+                transform: `translateX(${x > (graphWidth / 2) ? moveModifier * -1: moveModifier }px)`
+            }}>
                 <div>Time: {xFormatted}</div>
                 <div>Value: {yFormatted}</div>
-            </div>
+            </Box>
         );
     }}
     margin={{ top: 20, right: 40, bottom: 60, left: 80 }}

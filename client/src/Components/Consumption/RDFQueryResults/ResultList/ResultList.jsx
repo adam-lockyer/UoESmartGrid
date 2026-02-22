@@ -5,7 +5,7 @@ import Loading from "../../../Loading/Loading";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ResultList = ({ onOptionSelect, onBack, type, building, queryData = null }) => {
-    const { data, loading } = useQuery(`/api/ontology/${building}/${type}`, queryData);
+    const { data, loading } = useQuery({url: `/api/ontology/${building}/${type}`, toPass: queryData});
     if (loading) return <Loading size="small"/>
 
     const onClickBack = () => {

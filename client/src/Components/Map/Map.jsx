@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReactMapGL, { Popup, Marker } from "react-map-gl";
+import { Threebox } from 'threebox-plugin';
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapStyle from "./mapStyle.json";
 import { isMobile } from "react-device-detect";
@@ -10,8 +11,7 @@ import styles from "./Map.module.css";
 import { useNavigate } from "react-router-dom";
 
 const Map = () => {
-	const MAPBOX_TOKEN =
-		"pk.eyJ1Ijoic3F1aWdnbGVzMjU2IiwiYSI6ImNranVqeXY0MTAza3kydW51NGpvdG55MTEifQ.0kZloHbRuIykDGTOzHd1eQ";
+	const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || "";
 	const [viewport, setViewport] = useState({
 		latitude: 50.7367,
 		longitude: -3.5345,
@@ -26,6 +26,8 @@ const Map = () => {
 
 	const originalLat = 50.7367;
 	const originalLong = -3.5345;
+
+
 
 	const locations = [
 		{

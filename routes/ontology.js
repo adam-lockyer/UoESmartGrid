@@ -155,4 +155,18 @@ router.get('/CREWW/rooms', (req, res) => {
     }
 })
 
+// /api/ontology/CREWW/MAS
+router.get('/CREWW/MAS', async (req, res) => {
+    try {
+        const response = await axios.post(`http://localhost:8080/api/jade/send`, null, {
+            params: { subject: "creww#Streatham", predicate: "bot#hasBuilding", object: "null" }
+          });
+        const MASData = response.data;
+        console.log(MASData);
+        return res.status(200).json({ res: MASData });
+    } catch (error) {
+        return res.status(500).send('Internal Server Error');
+    }
+})
+
 module.exports = router;

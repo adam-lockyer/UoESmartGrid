@@ -17,6 +17,7 @@ import { isMobile } from "react-device-detect";
 // Components
 import { Home } from "./Components/Home/Home";
 import Map from "./Components/Map/Map";
+import MapTest from "./Components/Map/Map_Test";
 import { Info } from "./Components/Info/Info";
 import Login from "./Components/Login/Login";
 import BottomNavigation from "./Components/Navigation/BottomNavigation/BottomNavigation";
@@ -69,6 +70,8 @@ function App() {
 					<Route path="/login" element={<Login />} exact />
 					<Route path="/Contact" element={<Contact />} exact />
 					<Route path="/Test" element={<RDFtest/>} exact />
+					
+
 					<Route
 						path="/:building/Consumption"
 						element={
@@ -104,6 +107,15 @@ function App() {
 						element={
 								<PrivateRoute>
 									<Map />
+								</PrivateRoute>
+								} 
+						exact 
+					/>
+					<Route
+						path="/MapTest" 
+						element={
+								<PrivateRoute>
+									<MapTest />
 								</PrivateRoute>
 								} 
 						exact 

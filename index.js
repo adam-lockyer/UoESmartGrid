@@ -43,7 +43,7 @@ app.use("/api/ontology", require("./routes/ontology"));
 app.use("/api/mongoPull", require("./routes/mongoPull"));
 // Serve client on all non-api routes
 app.get("*", (req, res) => {
-	return res.sendFile(path.join(__dirname, "../app/client/dist", "index.html"));
+	return res.sendFile(path.join(__dirname, "./client/dist", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;

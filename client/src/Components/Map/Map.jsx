@@ -27,8 +27,6 @@ const Map = () => {
 	const originalLat = 50.7367;
 	const originalLong = -3.5345;
 
-
-
 	const locations = [
 		{
 			latitude: 50.736942,

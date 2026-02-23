@@ -10,7 +10,7 @@ const SensorDataGraph = ({ building, sensor }) => {
     let mongoRefObj = ""
     let mongoIDObj = ""
 
-    const { data, loading } = useQuery(`/api/ontology/${building}/ref`, queryData);
+    const { data, loading } = useQuery({url: `/api/ontology/${building}/ref`, toPass: queryData});
     if (data){
         mongoRefObj = data["mongoRef"][0].toString()
         mongoIDObj = data["mongoID"][0].toString()

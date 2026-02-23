@@ -3,8 +3,6 @@ import { ResponsiveLine } from '@nivo/line'
 import styles from "./LineGraph.module.css";
 import { Box, Fade } from "@mui/material";
 
-
-
 const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight, useToolTip=true,
     margin={ top: 20, right: 40, bottom: 60, left: 80 }, 
     theme={    

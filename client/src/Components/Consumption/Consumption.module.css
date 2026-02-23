@@ -163,10 +163,11 @@
 }
 
 .loadingDisplaying {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
     text-align: center;
 }
 
@@ -187,6 +188,7 @@
     text-align: center;
     width: 95%;
     height: calc(90% - 60px);
+	overflow: hidden;
 }
 
 .aboveGraph {

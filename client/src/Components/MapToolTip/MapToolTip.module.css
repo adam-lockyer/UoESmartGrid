@@ -1,0 +1,41 @@
+.tooltip {
+    position: absolute; /* Position it on top of the main div */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 300px;
+	padding: 10px;
+	border-radius: 8px;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(255,255,255,0.95);
+	text-align: center;
+	overflow-y: hidden;
+	box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.tooltip p {
+	padding: 5px 5px 0px 5px;
+	margin: 0;
+}
+.tooltip button {
+	width: 90%;
+	border-radius: 7px;
+	background: rgb(163, 163, 163);
+	border: none;
+	padding: 4px;
+	margin-top: -15px;
+	font-weight: 600;
+}
+
+.buttonSpacer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+}
+
+.buttonSpacer button {
+	margin: 10px 10px;
+	padding: 5px;
+}

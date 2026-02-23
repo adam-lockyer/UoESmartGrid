@@ -21,33 +21,40 @@ const userCollection = database.collection('users');
 
 // Login
 router.post("/login", async (req, res) => {
-	const { user, password } = req.body;
-	if (!user) return res.status(400).send('Exited');
-	if (user !== "admin")
+	try {
+		const { user, password } = req.body;
+		if (!user) return res.status(400).send('Exited');
+		if (user !== "admin")
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Username or password is incorrect" }] });
+		const foundUser = await userCollection.findOne({ username: user });
+		if (!foundUser)
+			return res
+				.status(404)
+				.json({ errors: [{ msg: "Username or password is incorrect" }] });
+		console.log(password, foundUser.password);
+		const isMatch = await bcrypt.compare(password, foundUser.password);
+	
+		if (isMatch) {
+			// Generate Token and send back
+			const payload = {
+				user: foundUser._id,
+			};
+			const token = jwt.sign(payload, config.get("jwtSecret"), {
+				expiresIn: config.get("jwtExpiry"),
+			});
+			return res.json({ token });
+		} else {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Username or password is incorrect" }] });
+		}
+	} catch (e) {
+		console.log(e);
 		return res
-			.status(400)
-			.json({ errors: [{ msg: "Username or password is incorrect" }] });
-	const foundUser = await userCollection.findOne({ username: user });
-	if (!foundUser)
-		return res
-			.status(404)
-			.json({ errors: [{ msg: "Username or password is incorrect" }] });
-	console.log(password, foundUser.password);
-	const isMatch = await bcrypt.compare(password, foundUser.password);
-
-	if (isMatch) {
-		// Generate Token and send back
-		const payload = {
-			user: foundUser._id,
-		};
-		const token = jwt.sign(payload, config.get("jwtSecret"), {
-			expiresIn: config.get("jwtExpiry"),
-		});
-		return res.json({ token });
-	} else {
-		return res
-			.status(400)
-			.json({ errors: [{ msg: "Username or password is incorrect" }] });
+		.status(500)
+		.json({ errors: [{ msg: "An unexpected error occurred" }] });
 	}
 });
 

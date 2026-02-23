@@ -1,11 +1,24 @@
-import React from "react";
+import React, {useMemo} from "react";
 import styles from "./Home.module.css";
 import moment from "moment";
 import Button from '@mui/material/Button';
+import { useMAS } from "../../hook/useMAS";
+
 
 export const Home = () => {
 	const endDate = moment().subtract(14, "d");
-	console.log(endDate);
+	// const masQueryData = {
+    //     subject: "creww#Streatham",
+    //     predicate: "bot#hasBuilding",
+    //     object: "null"
+    // } 
+
+	// const { data, loading } = useMAS({
+	// 	toPass: masQueryData,
+	// });
+	// if (loading) return <div>Loading...</div>
+	// console.log(data[0]);
+
 	return (
 		<div>
 			{/* Title Section */}

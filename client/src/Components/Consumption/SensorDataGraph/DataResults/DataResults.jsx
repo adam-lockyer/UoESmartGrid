@@ -13,49 +13,61 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField, DialogContent, Typography, Box } from '@mui/material';
 import dayjs from 'dayjs';
 import Icon from '../../../Icon/Icon';
+import { INTERVALS_MINS, INTERVALS_TEXT, MAX_DATAPOINTS } from '../../../../util/constants/consumption';
 
 const filterRows = (data, x) => {
     return data.filter((_, index) => index % x === 0);
   };
 
 const DataResults = ({ selectedSensor, queryData }) => {
+    const [intervalLists, setIntervalLists] = useState([]);
+    const [selectedInterval, setSelectedInterval] = useState(null);
+
     const graphTitle = (selectedSensor.replace(/_/g, " ")).split('-')[0];
-    const { data, loading } = useQuery(`/api/mongoPull/sensor`, queryData);
     const graphRef = useRef(null)
     console.log("see graphRef here:", graphRef)
     const { width, height } = useContainerDimensions(graphRef)
     console.log("see width - height here:", width, "-", height)
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
-    const intervalData = {text: ['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '7d'], interval: [5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080]}
+    const intervalData = {text: INTERVALS_TEXT, interval: INTERVALS_MINS}
 
-    const handleDataLoaded = () => {
-        const dataLists = {}
+    const handleDataLoaded = (responseData) => {
+        const dataLists = []
         intervalData["interval"].forEach((interval) => {
-            dataLists[interval] = datetimeDataFilter(data, interval);
+            dataLists.push(datetimeDataFilter(responseData, interval));
         });
         return dataLists
     }
 
+    const onRequestComplete = (data) => {
+        const tempIntervalLists = handleDataLoaded(data);
+        setIntervalLists(tempIntervalLists);
+
+        // Work out default selected interval
+        for (let index = 0; index < tempIntervalLists.length; index++) {
+            if (tempIntervalLists[index].length < MAX_DATAPOINTS) {
+                setSelectedInterval(index);
+                break;
+            }
+        }
+    };
+
+    const { data, loading } = useQuery({
+        url: `/api/mongoPull/sensor`,
+        toPass: queryData,
+        onComplete: onRequestComplete,
+    });
 
 
     if (loading) return <Loading size="large"/>
 
-    const allData = handleDataLoaded()
-    console.log(data)
-    console.log(allData)
-
-    const arraySkip = (Math.ceil(data.length/200)).toString()
-    const tickTime = ((Math.ceil(data.length/200))*5).toString()
-    const tickString = "every "+tickTime+" minutes";
-    const nivoData = filterRows(data, arraySkip);
-    // const [selectedIndex, setSelectedIndex] = useState(0);
 
     const LineData = [
 		{
 			id: selectedSensor,
             color: "hsl(271, 70%, 50%)",
-			data: nivoData?.map((cons) => {
+			data: intervalLists[selectedInterval]?.map((cons) => {
 				const timeEpoch = Date.parse(cons.datetime);
 				const outDate = new Date(timeEpoch).toISOString().substr(0, 10);
 				const outTime = new Date(timeEpoch).toISOString().substr(11, 5);
@@ -230,7 +242,7 @@ const DataResults = ({ selectedSensor, queryData }) => {
                         </LocalizationProvider>
                     </div>
                     <div className={styles.intervalCarousel}>
-                        <ButtonCarousel items={['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '7d']} onIndexChange={handleIndexChange} />
+                        <ButtonCarousel intervals={intervalLists} onIndexChange={setSelectedInterval} selectedIntervalIndex={selectedInterval} />
                         {/* {endDate ? (<ButtonCarousel items={['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '3d', '7d']}/>):(<></>)} */}
                     </div>
             </div>
@@ -238,7 +250,7 @@ const DataResults = ({ selectedSensor, queryData }) => {
             <div className={styles.graphDisplaying} ref={graphRef}>
                 <MyResponsiveLine
                     LineData={LineData}
-                    tickFormat={tickString}
+                    tickFormat={"every day"}
                     graphWidth={width}
                     graphHeight={height}
                 />

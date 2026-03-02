@@ -1,14 +1,13 @@
 .container {
-    height: calc(100vh - 68px);
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 	background-color: #ffffff;
+    padding: 2rem;
 }
 
 .gridContainer{
-	height: 80vh;
 	width: 90%;
 	min-width: 600px;
 	border-radius: 10px;

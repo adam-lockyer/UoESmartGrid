@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import ReactMapGL, { Popup, Marker } from "react-map-gl";
-import { Threebox } from 'threebox-plugin';
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapStyle from "./mapStyle.json";
 import { isMobile } from "react-device-detect";

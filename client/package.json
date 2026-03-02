@@ -12,11 +12,14 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@googlemaps/js-api-loader": "^2.0.2",
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "@mui/x-date-pickers": "^7.18.0",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
+    "@nivo/pie": "^0.87.0",
+    "@vis.gl/react-google-maps": "^1.7.1",
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.13",
@@ -35,7 +38,8 @@
     "react-router-dom": "^6.26.0",
     "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "threebox": "^0.1.5"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

@@ -17,6 +17,7 @@ import { isMobile } from "react-device-detect";
 // Components
 import { Home } from "./Components/Home/Home";
 import Map from "./Components/Map/Map";
+import Map_Test from "./Components/Map/Map_Test";
 import Info from "./Components/Info/Info";
 import Login from "./Components/Login/Login";
 import BottomNavigation from "./Components/Navigation/BottomNavigation/BottomNavigation";
@@ -30,6 +31,7 @@ import RDFtest from "./Components/test_page/RDFtest.jsx";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import { Box } from "@mui/material";
+import MapTestGoogle from "./Components/Map/Map_Test_Google_Maps.jsx";
 
 // Check token
 if (localStorage.token) {
@@ -116,6 +118,24 @@ function App() {
 							element={
 									<PrivateRoute>
 										<Map />
+									</PrivateRoute>
+									} 
+							exact 
+						/>
+						<Route
+							path="/3dmap" 
+							element={
+									<PrivateRoute>
+										<Map_Test />
+									</PrivateRoute>
+									} 
+							exact 
+						/>
+						<Route
+							path="/3dmapgoogle" 
+							element={
+									<PrivateRoute>
+										<MapTestGoogle />
 									</PrivateRoute>
 									} 
 							exact 

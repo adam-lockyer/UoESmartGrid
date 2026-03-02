@@ -1,112 +1,151 @@
-import React, { useState } from 'react';
-import { ResponsiveLine } from '@nivo/line'
+import React, { useState } from "react";
+import { ResponsiveLine } from "@nivo/line";
 import styles from "./LineGraph.module.css";
 import { Box, Fade } from "@mui/material";
 
-const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight, useToolTip=true,
-    margin={ top: 20, right: 40, bottom: 60, left: 80 }, 
-    theme={    
-        "fontFamily": "Comic Sans MS, cursive",
-        "text": {
-        "fontSize": 15,
-        "fill": "#ffffff",
-        "outlineWidth": 0,
-        "outlineColor": "transparent",
-        "fontFamily": "Comic Sans MS, cursive"
+const DEFAULT_THEME = {
+    fontFamily: "Comic Sans MS, cursive",
+    text: {
+        fontSize: 15,
+        fill: "#fa000000",
+        outlineWidth: 0,
+        outlineColor: "transparent",
+        fontFamily: "Comic Sans MS, cursive",
+    },
+    axis: {
+        domain: {
+            line: {
+                stroke: "#ff000000",
+                strokeWidth: 2,
+            },
         },
-        "axis": {
-            "domain": {
-                "line": {
-                    "stroke": "#ffffff",
-                    "strokeWidth": 2
-                }
+        legend: {
+            text: {
+                fontSize: 25,
+                fill: "#cc000000",
+                outlineWidth: 0,
+                outlineColor: "transparent",
+                fontFamily: "Comic Sans MS, cursive",
             },
-            "legend": {
-                "text": {
-                    "fontSize": 25,
-                    "fill": "#ffffff",
-                    "outlineWidth": 0,
-                    "outlineColor": "transparent",
-                    "fontFamily": "Comic Sans MS, cursive"
-                }
+        },
+        ticks: {
+            text: {
+                display: 'none',
+                fontFamily: "Comic Sans MS, cursive",
             },
-            "ticks": {
-                "text": {
-                    "fontFamily": "Comic Sans MS, cursive"
-                }
-            }
+        },
+    },
+    grid: {
+        line: {
+            stroke: 'red',
+            display: 'none'
         }
     },
-    axisBottom={
+    background: 'transparent'
+}
+
+const DEFAULT_AXIS_BOTTOM = {
         format: "%b %d",
         // tickValues: tickFormat,
         tickRotation: -45,
         legend: "Date",
-        legendOffset: 20
-    },
-    axisLeft={
-        orient: "left",
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "Value",
-        legendOffset: -50,
-        legendPosition: "middle"
-    },
-    onPointHover=null,
-    onPointLeave=null
-    }) => {
-        const [hoveredPoint, setHoveredPoint] = useState(null);
-        const handleMouseMove = (point) => {
-            setHoveredPoint(point);
-            onPointHover?.(point);
-        };
-        const handleMouseLeave = () => {
-            setHoveredPoint(null);
-            onPointLeave?.();
-        };
-        const getTooltip = () => {
-            if (!useToolTip) {
-                return () => null; 
+        legendOffset: 20,
+}
+const DEFAULT_AXIS_LEFT = {
+    orient: "left",
+    tickSize: 5,
+    tickPadding: 5,
+    tickRotation: 0,
+    legend: "Value",
+    legendOffset: -50,
+    legendPosition: "middle",
+}
+
+const MyResponsiveLine = ({
+    LineData,
+    LineColor,
+    tickFormat,
+    graphWidth,
+    graphHeight,
+    useToolTip = true,
+    margin = { top: 20, right: 0, bottom: 20, left: 0 },
+    theme,
+    axisBottom,
+    axisLeft,
+    onPointHover = null,
+    onPointLeave = null,
+}) => {
+    const [hoveredPoint, setHoveredPoint] = useState(null);
+    const handleMouseMove = (point) => {
+        setHoveredPoint(point);
+        onPointHover?.(point);
+    };
+    const handleMouseLeave = () => {
+        setHoveredPoint(null);
+        onPointLeave?.();
+    };
+    const getTooltip = () => {
+        if (!useToolTip) {
+            return () => null;
+        }
+
+        return ({
+            point: {
+                x,
+                y,
+                data: { xFormatted, yFormatted },
+            },
+        }) => {
+            const tooltipWidth = 120;
+            const tooltipHeight = 60;
+            const padding = 10;
+
+            let translateX = 0;
+            let translateY = 0;
+
+            // Horizontal positioning
+            if (x + tooltipWidth + padding > graphWidth) {
+                translateX = -tooltipWidth - padding;
+            } else {
+                translateX = padding;
             }
-            
-            return ({ point: { x, y, data: { xFormatted, yFormatted } } }) => {
-                const tooltipWidth = 120;
-                const tooltipHeight = 60;
-                const padding = 10;
-                
-                let translateX = 0;
-                let translateY = 0;
-                
-                // Horizontal positioning
-                if (x + tooltipWidth + padding > graphWidth) {
-                    translateX = -tooltipWidth - padding;
-                } else {
-                    translateX = padding;
-                }
-                
-                // Vertical positioning
-                if (y + tooltipHeight + padding > graphHeight) {
-                    translateY = -tooltipHeight - padding;
-                } else {
-                    translateY = padding;
-                }
-                
-                return (
-                    <div 
-                        className={styles.toolTipContainer}
-                        style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
-                    >
-                        <div>Time: {xFormatted}</div>
-                        <div>Value: {yFormatted}</div>
-                    </div>
-                );
-            };
+
+            // Vertical positioning
+            if (y + tooltipHeight + padding > graphHeight) {
+                translateY = -tooltipHeight - padding;
+            } else {
+                translateY = padding;
+            }
+
+            return (
+                <div
+                    className={styles.toolTipContainer}
+                    style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
+                >
+                    <div>Time: {xFormatted}</div>
+                    <div>Value: {yFormatted}</div>
+                </div>
+            );
         };
-        
-        return (
-            <div onMouseLeave={handleMouseLeave} style={{ width: '100%', height: '100%' }}>
-                <ResponsiveLine
+    };
+
+    const compiledTheme = {
+        ...DEFAULT_THEME,
+        ...theme,
+    };
+
+    const compiledAxisBottom = {
+        ...DEFAULT_AXIS_BOTTOM,
+        ...axisBottom
+    };
+    const compiledAxisLeft = {
+        ...DEFAULT_AXIS_LEFT,
+        ...axisLeft
+    };
+
+    return (
+        <div onMouseLeave={handleMouseLeave} style={{ width: "100%", height: "100%" }}>
+            <ResponsiveLine
                 data={LineData}
                 tooltip={getTooltip()}
                 onMouseMove={handleMouseMove}
@@ -121,21 +160,24 @@ const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight, useTo
                     min: "auto",
                     max: "auto",
                     stacked: false,
-                    reverse: false
+                    reverse: false,
                 }}
                 axisTop={null}
                 axisRight={null}
-                axisLeft={axisLeft}
-                axisBottom={axisBottom}
-                colors={{ scheme: "nivo" }}
-                pointSize={8}
+                axisLeft={compiledAxisLeft}
+                axisBottom={compiledAxisBottom}
+                colors={[LineColor]}
+                lineWidth={3}
+                pointSize={0}
                 pointColor={{ theme: "background" }}
                 pointBorderWidth={2}
                 pointBorderColor={{ from: "serieColor" }}
                 pointLabel="y"
                 pointLabelYOffset={-12}
                 useMesh={true}
-                theme={theme}
+                curve="basis"
+                theme={compiledTheme}
+                
                 // legends={[
                 //     {
                 //     anchor: "bottom-right",
@@ -162,9 +204,9 @@ const MyResponsiveLine = ({ LineData, tickFormat, graphWidth, graphHeight, useTo
                 //     ]
                 //     }
                 // ]}
-                />
-            </div>
-        )
+            />
+        </div>
+    );
 };
 
-export default MyResponsiveLine
+export default MyResponsiveLine;

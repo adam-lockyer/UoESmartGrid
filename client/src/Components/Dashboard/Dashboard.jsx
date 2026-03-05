@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import { nivoData } from "./mockData";
 
-import Icon from "../Icon/Icon";
 import QuickViewBox from "./GridBoxes/QuickViewBox";
 import QuickViewComparison from "./GridBoxes/QuickViewComparison";
 import GraphBox from "./GridBoxes/GraphBox";
@@ -12,9 +11,9 @@ import TopConsump from "./GridBoxes/TopConsump";
 import AlertBox from "./GridBoxes/AlertBox";
 import FloorBox from "./GridBoxes/FloorBox";
 import PieGraphBox from "./GridBoxes/PieGraphBox";
-
 import StatusBox from "./GridBoxes/StatusBox";
-import PieChart from "../PieChart/PieChart";
+
+import { useDashboard } from "../../hook/useMAS";
 
 const sharedBoxStyle = { display: "flex", alignItems: "center", columnGap: 0.5, rowGap: 0 };
 const buttonStyles = {
@@ -88,13 +87,23 @@ const Dashboard = () => {
         },
     ];
 
+    const masDashboardReq = {
+        request: "DashboardLoad",
+        data: "all",
+    } 
+    const { data, loading } = useDashboard({
+		toPass: masDashboardReq,
+	});
+	if (loading) return <div>Loading...</div>
+	console.log(data[0]);
+	console.log(data[0].electric - data[0].yesterdayElectric / data[0].yesterdayElectric);
     const consumpLineData = [
         {
             id: "EnergyComsuption",
             color: "hsl(271, 70%, 50%)",
             data: (() => {
                 const mappedData =
-                    nivoData?.map((cons) => {
+                    data[0].graphData?.map((cons) => {
                         const timeEpoch = Date.parse(cons.datetime);
                         const outDate = new Date(timeEpoch).toISOString().substr(0, 10);
                         const outTime = new Date(timeEpoch).toISOString().substr(11, 5);
@@ -159,8 +168,8 @@ const Dashboard = () => {
                         background="rgb(248, 183, 108)"
                         color="white"
                         title="Electricity Usage"
-                        percentage={2}
-                        value={1842}
+                        percentage={3}
+                        value={data[0].electric}
                         unit="kWh"
                         titleIcon="electric_bolt"
                     />
@@ -168,24 +177,10 @@ const Dashboard = () => {
                         background="rgb(143, 150, 255)"
                         color="white"
                         title="Water Usage"
-                        percentage={2}
-                        value={1842}
-                        unit="kWh"
+                        percentage={-2}
+                        value={data[0].water}
+                        unit="Litres"
                         titleIcon="valve"
-                    />
-                    <QuickViewComparison
-                        background="rgb(255, 125, 125)"
-                        color="white"
-                        title="Gas Usage"
-                        percentage={1}
-                        value={285}
-                        unit="m3"
-                        unitDisplay={
-                            <>
-                                m<sup>3</sup>
-                            </>
-                        }
-                        titleIcon="propane_tank"
                     />
                     <QuickViewComparison
                         background="rgb(58, 121, 69)"
@@ -200,16 +195,16 @@ const Dashboard = () => {
                         background="rgb(129, 129, 129)"
                         color="white"
                         title="Carbon Footprint"
-                        percentage={-2}
-                        value={194}
+                        percentage={`${Math.round((data[0].electric - data[0].yesterdayElectric / data[0].yesterdayElectric) * 100)}`}
+                        value={`${Math.round((data[0].electric) * 0.117)}`}
                         unit="kg"
                         titleIcon="eco"
                     />
                     <QuickViewBox
                         background="rgb(255, 255, 255)"
                         color="#333"
-                        title="Peak Demand"
-                        value={194}
+                        title="Peak Electrical Demand"
+                        value={data[0].peakElectric}
                         unit="kW"
                         icon="history_2"
                         iconColor="#333"
@@ -217,7 +212,19 @@ const Dashboard = () => {
                         iconSize="1.2rem"
                         titleIcon="leaderboard"
                     />
-
+                    <QuickViewBox
+                        background="rgb(255, 255, 255)"
+                        color="#333"
+                        title="Peak Water Demand"
+                        value={data[0].peakWater}
+                        unit="Litres"
+                        icon="history_2"
+                        iconColor="#333"
+                        desc="At 3:45 pm"
+                        iconSize="1.2rem"
+                        titleIcon="leaderboard"
+                    />
+                    
                     <GraphBox
                         background="white"
                         color="#000000"

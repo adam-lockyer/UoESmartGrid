@@ -2,7 +2,7 @@ import React, {useMemo} from "react";
 import styles from "./Home.module.css";
 import moment from "moment";
 import Button from '@mui/material/Button';
-import { useMAS } from "../../hook/useMAS";
+import { useOntology } from "../../hook/useMAS";
 
 
 export const Home = () => {

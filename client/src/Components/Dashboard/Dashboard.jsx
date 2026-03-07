@@ -95,15 +95,15 @@ const Dashboard = () => {
 		toPass: masDashboardReq,
 	});
 	if (loading) return <div>Loading...</div>
-	console.log(data[0]);
-	console.log(data[0].electric - data[0].yesterdayElectric / data[0].yesterdayElectric);
+	console.log(data[0]);;
+
     const consumpLineData = [
         {
-            id: "EnergyComsuption",
+            id: "EnergyConsumption",
             color: "hsl(271, 70%, 50%)",
             data: (() => {
                 const mappedData =
-                    data[0].graphData?.map((cons) => {
+                    data[0].elecGraphData?.map((cons) => {
                         const timeEpoch = Date.parse(cons.datetime);
                         const outDate = new Date(timeEpoch).toISOString().substr(0, 10);
                         const outTime = new Date(timeEpoch).toISOString().substr(11, 5);
@@ -168,7 +168,7 @@ const Dashboard = () => {
                         background="rgb(248, 183, 108)"
                         color="white"
                         title="Electricity Usage"
-                        percentage={3}
+                        percentage={`${Math.round((((data[0].electric - data[0].yesterdayElectric) / data[0].yesterdayElectric) * 100) * 10) / 10}`}
                         value={data[0].electric}
                         unit="kWh"
                         titleIcon="electric_bolt"
@@ -177,7 +177,7 @@ const Dashboard = () => {
                         background="rgb(143, 150, 255)"
                         color="white"
                         title="Water Usage"
-                        percentage={-2}
+                        percentage={`${Math.round((((data[0].water - data[0].yesterdayWater) / data[0].yesterdayWater) * 100) * 10) / 10}`}
                         value={data[0].water}
                         unit="Litres"
                         titleIcon="valve"
@@ -195,7 +195,7 @@ const Dashboard = () => {
                         background="rgb(129, 129, 129)"
                         color="white"
                         title="Carbon Footprint"
-                        percentage={`${Math.round((data[0].electric - data[0].yesterdayElectric / data[0].yesterdayElectric) * 100)}`}
+                        percentage={5}
                         value={`${Math.round((data[0].electric) * 0.117)}`}
                         unit="kg"
                         titleIcon="eco"

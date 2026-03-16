@@ -3,14 +3,11 @@ import React from "react";
 import Icon from "../../Icon/Icon";
 import { useNavigate } from "react-router-dom";
 
-const StatusBox = ({ background, color, title, gridColumn, gridRow }) => {
+const StatusBox = ({ background, color, title, gridColumn, gridRow, temp, airScore, totalNoHVAC, noHVACenabled, pvGen }) => {
     const navigate = useNavigate();
-    const temp = 22;
-    const noHVACenabled = 13;
     const tempColour = temp > 20 ? (temp > 24 ? "red" : "orange") : temp < 18 ? "blue" : "green";
-    const airScore = 96
     const airScoreColour = airScore > 50 ? (airScore > 75 ? "green" : "yellow") : airScore < 25 ? "red" : "orange";
-    const pvGen = 15.6
+
     return (
         <Box
             backgroundColor={background}
@@ -76,7 +73,7 @@ const StatusBox = ({ background, color, title, gridColumn, gridRow }) => {
                         <Typography variant="body1" textAlign="center">Temperature</Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" justifyContent="start" alignItems="center" marginTop={1}>
-                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px" color={tempColour}>{temp}<sup>o</sup>C</Box>
+                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px" color={tempColour}>{`${Math.round((temp)*10)/10}`}<sup>o</sup>C</Box>
                         <Box>Building Average</Box>
                     </Box>
                 </Box>
@@ -96,7 +93,7 @@ const StatusBox = ({ background, color, title, gridColumn, gridRow }) => {
                         <Typography variant="body1" textAlign="center">HVAC</Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" justifyContent="start" alignItems="center" marginTop={1}>
-                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px"  color="#6b6b88">{noHVACenabled} / 75</Box>
+                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px"  color="#6b6b88">{noHVACenabled} / {totalNoHVAC}</Box>
                         <Box>Devices Running</Box>
                     </Box>
                 </Box>
@@ -118,7 +115,7 @@ const StatusBox = ({ background, color, title, gridColumn, gridRow }) => {
                         <Typography variant="body1" textAlign="center">Air Quality</Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" justifyContent="start" alignItems="center" marginTop={1}>
-                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px" color={airScoreColour}>{airScore}%</Box>
+                        <Box fontSize="1.5rem" fontWeight="bold" letterSpacing="1px" color={airScoreColour}>{`${Math.round((airScore)*10)/10}`}%</Box>
                         <Box>
                             <Chip variant="filled" color="success" label="Excellent" />
                         </Box>
@@ -143,7 +140,7 @@ const StatusBox = ({ background, color, title, gridColumn, gridRow }) => {
                         <Typography variant="body1" textAlign="center">Solar Energy</Typography>
                     </Box>
                     <Box display="flex" flexDirection="column" justifyContent="start" alignItems="center" marginTop={1}>
-                        <Box display="flex" alignItems="baseline" gap="0.25rem" fontSize="1.5rem" color="#6b6b88" fontWeight="bold" letterSpacing="1px"><Box>{pvGen}</Box><Box fontSize="0.9rem">MWh</Box></Box>
+                        <Box display="flex" alignItems="baseline" gap="0.25rem" fontSize="1.5rem" color="#6b6b88" fontWeight="bold" letterSpacing="1px"><Box>{`${Math.round((pvGen)*100)/100}`}</Box><Box fontSize="0.9rem">MWh</Box></Box>
                         <Box>Generated</Box>
                     </Box>
                 </Box>

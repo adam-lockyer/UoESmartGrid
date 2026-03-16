@@ -240,6 +240,11 @@ const Dashboard = () => {
                         gridColumn="span 2"
                         gridRow="span 3"
                         title=""
+                        temp={data[0].temperature}
+                        airScore={data[0].airQual}
+                        pvGen={data[0].solarEnergy}
+                        noHVACenabled = {data[0].HVACDevicesOn}
+                        totalNoHVAC = {data[0].HVACDevices}
                     />
 
                     <PieGraphBox

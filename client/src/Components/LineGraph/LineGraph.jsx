@@ -175,7 +175,7 @@ const MyResponsiveLine = ({
                 pointLabel="y"
                 pointLabelYOffset={-12}
                 useMesh={true}
-                curve="basis"
+                curve="monotoneX"
                 theme={compiledTheme}
                 
                 // legends={[

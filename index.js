@@ -5,6 +5,26 @@ const cors = require("cors");
 
 const nodemon = require('nodemon');
 
+// Silence Node runtime warnings in server logs.
+process.removeAllListeners("warning");
+process.on("warning", () => {});
+
+process.on("uncaughtException", (error) => {
+	console.error("Uncaught Exception:", error);
+	if (error && error.stack) {
+		console.error(error.stack);
+	}
+	process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+	console.error("Unhandled Rejection:", reason);
+	if (reason && reason.stack) {
+		console.error(reason.stack);
+	}
+	process.exit(1);
+});
+
 process
 	// Handle normal exits
 	.on("exit", (code) => {

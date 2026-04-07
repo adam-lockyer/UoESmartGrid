@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index --ignore ./ontology/",
+    "server": "nodemon --verbose --exec \"node --trace-uncaught --trace-warnings\" index.js --ignore ./ontology/",
     "start": "node index",
     "client": "npm start --prefix client/",
     "dev": "concurrently \"npm run server\" \"npm run client\"",

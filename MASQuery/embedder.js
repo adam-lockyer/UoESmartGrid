@@ -1,11 +1,15 @@
 const ort = require('onnxruntime-node');
 const path = require('path');
 const fs = require('fs');
-const { AutoTokenizer } = require('@xenova/transformers'); // Optional JS tokenizer
 
 const MODEL_PATH = path.join(__dirname, 'all_minilm_l6_v2.onnx');
 let sessionPromise;
 let tokenizerPromise;
+
+async function getTokenizer() {
+    const transformers = await import('@xenova/transformers');
+    return transformers.AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2');
+}
 
 function preprocessQuery(query) {
 
@@ -31,7 +35,7 @@ async function embedSentence(sentence) {
         sessionPromise = ort.InferenceSession.create(MODEL_PATH);
     }
     if (!tokenizerPromise) {
-        tokenizerPromise = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2');
+        tokenizerPromise = getTokenizer();
     }
 
     const session = await sessionPromise;
@@ -40,30 +44,18 @@ async function embedSentence(sentence) {
     const tokenizer = await tokenizerPromise;
     const encoded = await tokenizer(sentence);
 
-    let inputIds = encoded.input_ids;
-    let attentionMask = encoded.attention_mask;
+    // @xenova/transformers returns Tensor objects — extract raw data and shape.
+    const inputIdsData = Array.from(encoded.input_ids.data);
+    const attentionMaskData = Array.from(encoded.attention_mask.data);
+    const seqLen = encoded.input_ids.dims[1];
 
-    if (Array.isArray(inputIds) && Array.isArray(inputIds[0])) {
-        inputIds = inputIds[0];
-    }
-    if (Array.isArray(attentionMask) && Array.isArray(attentionMask[0])) {
-        attentionMask = attentionMask[0];
-    }
+    // Prepare ONNX input
+    const input_ids = new ort.Tensor('int64', BigInt64Array.from(inputIdsData.map((x) => BigInt(x))), [1, seqLen]);
+    const attention_mask = new ort.Tensor('int64', BigInt64Array.from(attentionMaskData.map((x) => BigInt(x))), [1, seqLen]);
 
-    if (!Array.isArray(inputIds)) {
-        throw new Error("Tokenizer did not return input_ids as an array");
-    }
-    if (!Array.isArray(attentionMask)) {
-        attentionMask = new Array(inputIds.length).fill(1);
-    }
-
-  // Prepare ONNX input
-  const input_ids = new ort.Tensor('int64', BigInt64Array.from(inputIds.map((x) => BigInt(x))), [1, inputIds.length]);
-  const attention_mask = new ort.Tensor('int64', BigInt64Array.from(attentionMask.map((x) => BigInt(x))), [1, attentionMask.length]);
-
-  const results = await session.run({ input_ids, attention_mask });
-  const embedding = results.pooler_output.data; // 384-dim sentence embedding
-  return embedding;
+    const results = await session.run({ input_ids, attention_mask });
+    const embedding = results.pooler_output.data; // 384-dim sentence embedding
+    return embedding;
 }
 
 module.exports = {

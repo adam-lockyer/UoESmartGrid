@@ -55,17 +55,17 @@ const Dashboard = () => {
                     params: { sentence: trimmedInput },
                 }
             );
-
+            const embed_length = res.data.results?.length || "unknown";
             const assistantText =
                 typeof res.data === "string"
                     ? res.data
-                    : res.data.message || res.data.result || JSON.stringify(res.data);
+                    :  res.data.results;
 
             setChatMessages((prev) => [
                 ...prev,
                 {
                     role: "assistant",
-                    text: assistantText,
+                    text: `Embedding length: ${embed_length}, Values: ${JSON.stringify(assistantText)}`,
                 },
             ]);
         } catch (error) {
@@ -452,6 +452,7 @@ const Dashboard = () => {
                                             backgroundColor:
                                                 message.role === "user" ? "#003b3c" : "#f0f3f5",
                                             color: message.role === "user" ? "#ffffff" : "#1f2933",
+                                            wordBreak: "break-word",
                                         }}
                                     >
                                         <Typography variant="body2">{message.text}</Typography>

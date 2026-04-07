@@ -41,6 +41,8 @@ app.use("/api/rooms", require("./routes/rooms"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/ontology", require("./routes/ontology"));
 app.use("/api/mongoPull", require("./routes/mongoPull"));
+app.use("/api/nlq", require("./routes/nlq"));
+
 // Serve client on all non-api routes
 app.get("*", (req, res) => {
 	return res.sendFile(path.join(__dirname, "./client/dist", "index.html"));

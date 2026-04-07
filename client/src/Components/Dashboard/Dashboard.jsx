@@ -1,6 +1,7 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import styles from "./Dashboard.module.css";
 import { nivoData } from "./mockData";
 
@@ -27,6 +28,58 @@ const buttonStyles = {
 const Dashboard = () => {
     const { building } = useParams();
     const navigate = useNavigate();
+    const apiBaseUrl = import.meta.env.VITE_API_URL || "";
+    const [isQueryDialogOpen, setIsQueryDialogOpen] = useState(false);
+    const [chatInput, setChatInput] = useState("");
+    const [chatMessages, setChatMessages] = useState([
+        {
+            role: "assistant",
+            text: `Ask me about ${building || "this building"} usage, occupancy, HVAC, or forecasts.`,
+        },
+    ]);
+
+    const openQueryDialog = () => setIsQueryDialogOpen(true);
+    const closeQueryDialog = () => setIsQueryDialogOpen(false);
+
+    const sendChatMessage = async () => {
+        const trimmedInput = chatInput.trim();
+        if (!trimmedInput) return;
+
+        setChatMessages((prev) => [...prev, { role: "user", text: trimmedInput }]);
+        setChatInput("");
+
+        try {
+            const res = await axios.get(
+                `${apiBaseUrl}/api/nlq`,
+                {
+                    params: { sentence: trimmedInput },
+                }
+            );
+
+            const assistantText =
+                typeof res.data === "string"
+                    ? res.data
+                    : res.data.message || res.data.result || JSON.stringify(res.data);
+
+            setChatMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    text: assistantText,
+                },
+            ]);
+        } catch (error) {
+            console.log(error)
+            setChatMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    text: error.response?.data?.msg || "The query request failed.",
+                },
+            ]);
+        }
+    };
+
     const OccupiedRooms = 14;
     const OccupancySensedRooms = 43;
     const tickString = "every 5 minutes";
@@ -369,11 +422,66 @@ const Dashboard = () => {
                                 boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
                                 backgroundColor: "#003b3c",
                             }}
-                            onClick={() => navigate(`/${building}/Consumption`)}
+                            onClick={openQueryDialog}
                         >
-                            View asdgdgfsafaggf
+                            Query Building Data
                         </Button>
                     </Box>
+
+                    <Dialog open={isQueryDialogOpen} onClose={closeQueryDialog} fullWidth maxWidth="sm">
+                        <DialogTitle>Query Building Data</DialogTitle>
+                        <DialogContent dividers>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 1,
+                                    maxHeight: "45vh",
+                                    overflowY: "auto",
+                                    pr: 0.5,
+                                }}
+                            >
+                                {chatMessages.map((message, index) => (
+                                    <Box
+                                        key={`${message.role}-${index}`}
+                                        sx={{
+                                            alignSelf: message.role === "user" ? "flex-end" : "flex-start",
+                                            maxWidth: "85%",
+                                            p: 1,
+                                            borderRadius: 2,
+                                            backgroundColor:
+                                                message.role === "user" ? "#003b3c" : "#f0f3f5",
+                                            color: message.role === "user" ? "#ffffff" : "#1f2933",
+                                        }}
+                                    >
+                                        <Typography variant="body2">{message.text}</Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+
+                            <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    value={chatInput}
+                                    placeholder="Type your query..."
+                                    onChange={(event) => setChatInput(event.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter") {
+                                            event.preventDefault();
+                                            sendChatMessage();
+                                        }
+                                    }}
+                                />
+                                <Button variant="contained" onClick={sendChatMessage} sx={{ backgroundColor: "#003b3c" }}>
+                                    Send
+                                </Button>
+                            </Box>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={closeQueryDialog}>Close</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             </div>
         </div>

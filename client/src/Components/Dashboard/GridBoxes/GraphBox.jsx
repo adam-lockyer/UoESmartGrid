@@ -36,6 +36,9 @@ const GraphBox = ({ title, LineData, tickFormat, background, color, theme=null, 
         legendOffset: 0
     };
 
+    const hasData = Array.isArray(LineData)
+        && LineData.some((series) => Array.isArray(series?.data) && series.data.length > 0);
+
 
 
     const buttonStyles={ fontSize: '0.875rem', padding:'0', marginRight:'10px', marginLeft:'10px', color:'#333' }
@@ -62,28 +65,34 @@ const GraphBox = ({ title, LineData, tickFormat, background, color, theme=null, 
 
                 </Box>
                 <Box sx={{ fontSize: '0.875rem', marginLeft: 'auto', minHeight: '24px', display: 'flex', alignItems: 'center' }}>
-                    {hoveredPoint ? (
+                    {hasData && hoveredPoint ? (
                         <Box display="flex" flexDirection="row" alignItems="center" gap={1}><Box fontSize="0.75rem" color="#5c5c5c">{hoveredPoint.data.xFormatted} </Box><Box fontWeight="bold"> | </Box><Box fontSize="0.9rem">{hoveredPoint.data.yFormatted} kWh</Box></Box>
                     ) : (
-                        <>Hover over the graph to see values</>
+                        <>{hasData ? "Hover over the graph to see values" : "No data available"}</>
                     )}
                 </Box>
             </Box>
             <div style={{ display:"flex", alignItems:"center", flex: 1, minHeight: "40%", width: 'calc(100% + 32px)', margin: "0 -16px"}}>
-                <MyResponsiveLine
-                    LineData={LineData}
-                    LineColor={"#333"}
-                    tickFormat={tickFormat}
-                    graphWidth={width}
-                    graphHeight={height}
-                    margin={ chartMargin }
-                    theme={theme}
-                    useToolTip={false}
-                    axisLeft={chartAxisLeft}
-                    axisBottom={chartAxisBottom}
-                    onPointHover={setHoveredPoint}
-                    onPointLeave={setHoveredPoint}
-                />
+                {hasData ? (
+                    <MyResponsiveLine
+                        LineData={LineData}
+                        LineColor={"#333"}
+                        tickFormat={tickFormat}
+                        graphWidth={width}
+                        graphHeight={height}
+                        margin={ chartMargin }
+                        theme={theme}
+                        useToolTip={false}
+                        axisLeft={chartAxisLeft}
+                        axisBottom={chartAxisBottom}
+                        onPointHover={setHoveredPoint}
+                        onPointLeave={setHoveredPoint}
+                    />
+                ) : (
+                    <Box sx={{ width: '100%', textAlign: 'center', color: '#6b7280', fontSize: '0.85rem' }}>
+                        No graph data available for this period.
+                    </Box>
+                )}
             </div>
             <Box display="flex" alignItems="baseline" justifyContent="space-between" flexDirection="row" sx={{ padding: 1, gap: 1, marginRight: 1 }}>
                 <Box display="flex" alignItems="baseline" flexDirection="row">

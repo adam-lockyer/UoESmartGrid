@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import styles from "./LineGraph.module.css";
-import { Box, Fade } from "@mui/material";
+import { Box } from "@mui/material";
 
 const DEFAULT_THEME = {
     fontFamily: "Comic Sans MS, cursive",
@@ -76,6 +76,26 @@ const MyResponsiveLine = ({
     onPointLeave = null,
 }) => {
     const [hoveredPoint, setHoveredPoint] = useState(null);
+
+    const sanitizedLineData = Array.isArray(LineData)
+        ? LineData
+            .map((series) => ({
+                ...series,
+                data: Array.isArray(series?.data)
+                    ? series.data.filter((point) => point && point.x !== undefined && point.y !== undefined)
+                    : [],
+            }))
+            .filter((series) => series.data.length > 0)
+        : [];
+
+    if (sanitizedLineData.length === 0) {
+        return (
+            <Box sx={{ width: "100%", textAlign: "center", color: "#6b7280", fontSize: "0.85rem" }}>
+                No graph data available.
+            </Box>
+        );
+    }
+
     const handleMouseMove = (point) => {
         setHoveredPoint(point);
         onPointHover?.(point);
@@ -146,7 +166,7 @@ const MyResponsiveLine = ({
     return (
         <div onMouseLeave={handleMouseLeave} style={{ width: "100%", height: "100%" }}>
             <ResponsiveLine
-                data={LineData}
+                data={sanitizedLineData}
                 tooltip={getTooltip()}
                 onMouseMove={handleMouseMove}
                 margin={margin}

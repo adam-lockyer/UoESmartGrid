@@ -41,7 +41,7 @@ const TopConsump = ({
                     >
                         <Box>Device</Box>
                         <Box>Room</Box>
-                        <Box>Meter</Box>
+                        <Box>Floor</Box>
                     </Box>
                 </Box>
                 <Box fontSize="1rem">

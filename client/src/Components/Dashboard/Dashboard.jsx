@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./Dashboard.module.css";
@@ -37,6 +37,16 @@ const Dashboard = () => {
             text: `Ask me about ${building || "this building"} usage, occupancy, HVAC, or forecasts.`,
         },
     ]);
+    const chatScrollContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (!isQueryDialogOpen || !chatScrollContainerRef.current) {
+            return;
+        }
+
+        const container = chatScrollContainerRef.current;
+        container.scrollTop = container.scrollHeight;
+    }, [chatMessages, isQueryDialogOpen]);
 
     const openQueryDialog = () => setIsQueryDialogOpen(true);
     const closeQueryDialog = () => setIsQueryDialogOpen(false);
@@ -55,26 +65,29 @@ const Dashboard = () => {
                     params: { sentence: trimmedInput },
                 }
             );
-            const embed_length = res.data.results?.length || "unknown";
-            const assistantText =
-                typeof res.data === "string"
-                    ? res.data
-                    :  res.data.results;
+            const { filename, contentType, size } = res.data ?? {};
 
-            setChatMessages((prev) => [
-                ...prev,
-                {
-                    role: "assistant",
-                    text: `Embedding length: ${embed_length}, Values: ${JSON.stringify(assistantText)}`,
-                },
-            ]);
+            if (!filename) {
+                setChatMessages((prev) => [
+                    ...prev,
+                    { role: "assistant", text: "Query completed but no file was returned." },
+                ]);
+            } else {
+                setChatMessages((prev) => [
+                    ...prev,
+                    {
+                        role: "assistant",
+                        text: `File saved: ${filename} (${contentType}, ${size} bytes)`,
+                    },
+                ]);
+            }
         } catch (error) {
-            console.log(error)
+            const serverMsg = error.response?.data?.errors?.[0]?.msg;
             setChatMessages((prev) => [
                 ...prev,
                 {
                     role: "assistant",
-                    text: error.response?.data?.msg || "The query request failed.",
+                    text: serverMsg || "The query request failed.",
                 },
             ]);
         }
@@ -148,24 +161,35 @@ const Dashboard = () => {
 		toPass: masDashboardReq,
 	});
 	if (loading) return <div>Loading...</div>
-	console.log(data[0]);;
+
+    const electricityGraphData = Array.isArray(data?.[0]?.elecGraphData)
+        ? data[0].elecGraphData
+        : [];
 
     const consumpLineData = [
         {
             id: "EnergyConsumption",
             color: "hsl(271, 70%, 50%)",
             data: (() => {
-                const mappedData =
-                    data[0].elecGraphData?.map((cons) => {
-                        const timeEpoch = Date.parse(cons.datetime);
+                const mappedData = electricityGraphData
+                    .map((cons) => {
+                        const timeEpoch = Date.parse(cons?.datetime);
+                        const numericValue = Number(cons?.value);
+
+                        if (Number.isNaN(timeEpoch) || !Number.isFinite(numericValue)) {
+                            return null;
+                        }
+
                         const outDate = new Date(timeEpoch).toISOString().substr(0, 10);
                         const outTime = new Date(timeEpoch).toISOString().substr(11, 5);
-                        let XAxis = `${outDate} ${outTime}`;
+                        const XAxis = `${outDate} ${outTime}`;
+
                         return {
                             x: XAxis,
-                            y: cons.value,
+                            y: numericValue,
                         };
-                    }) || [];
+                    })
+                    .filter((point) => point !== null);
 
                 if (mappedData.length > 1) {
                     const first = new Date(mappedData[0].x);
@@ -432,6 +456,7 @@ const Dashboard = () => {
                         <DialogTitle>Query Building Data</DialogTitle>
                         <DialogContent dividers>
                             <Box
+                                ref={chatScrollContainerRef}
                                 sx={{
                                     display: "flex",
                                     flexDirection: "column",
